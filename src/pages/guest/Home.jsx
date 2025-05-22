@@ -1,7 +1,8 @@
 import { For } from "solid-js";
-import NavbarGuest from "../../components/navbarGuest";
-import "../../assets/guest/Home.css"
-import bannerImg from "../../assets/banner/banner.png"
+import NavbarGuest from "../../components/NavbarGuest";
+import "../../assets/css/guest/Home.css"
+import bannerImg from "../../assets/img/banner.png"
+import TeaserCandidates from "./TeaserCandidates";
 
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
       </div>
 
       {/* Categories */}
-
+      <TeaserCandidates/>
 
       {/* Footer */}
       <div class="footer">

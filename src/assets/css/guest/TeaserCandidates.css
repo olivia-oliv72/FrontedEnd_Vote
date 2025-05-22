@@ -1,0 +1,9 @@
+.container-candidates, .container-name-candidates {
+    display: flex;
+    flex-direction: column;
+}
+
+.photo-candidates{
+    display: flex;
+    
+}
