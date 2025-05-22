@@ -28,22 +28,32 @@ function Login() {
                 <Match when={isLogin()}>
                     <div>
                         <h2>Login Form</h2>
-                        <input type="text" placeholder="email address" />
-                        <br />
-                        <input type="password" placeholder="password" />
-                        <br />
+                        <div>
+                            <p>Email Address</p>
+                            <input type="text" placeholder="email address" />
+                        </div>
+                        <div>
+                            <p>Password</p>
+                            <input type="password" placeholder="password" />
+                        </div>
                         <button>Login</button>
                     </div>
                 </Match>
                 <Match when={!isLogin()}>
                     <div>
                         <h2>Register Form</h2>
-                        <input type="text" placeholder="username" />
-                        <br />
-                        <input type="text" placeholder="email address" />
-                        <br />
-                        <input type="password" placeholder="password" />
-                        <br />
+                        <div>
+                            <p>Username</p>
+                            <input type="text" placeholder="Username" />
+                        </div>
+                        <div>
+                            <p>Email Address</p>
+                            <input type="text" placeholder="email address" />
+                        </div>
+                        <div>
+                            <p>Password</p>
+                            <input type="password" placeholder="password" />
+                        </div>
                         <button>Login</button>
                     </div>
                 </Match>
