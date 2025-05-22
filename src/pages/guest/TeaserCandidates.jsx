@@ -15,9 +15,11 @@ export default function TeaserCandidates() {
 
                     <For each={category.candidates.slice(0, 3)}>
                         {(candidate) => (
-                        <div class="bg-gray-100 p-2 rounded">
-                            <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} class="w-full h-24 object-cover rounded mb-1" />
-                            <p>{candidate.name}</p>
+                        <div class="per-candidate">
+                            <div class='box'>
+                                <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name}/>
+                                <p>{candidate.name}</p>
+                            </div>
                         </div>
                         )}
                     </For>

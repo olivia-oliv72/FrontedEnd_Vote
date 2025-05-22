@@ -6,6 +6,7 @@ const initialCategories = [
       { id: "f1", name: "IU", photo: "iu.png" },
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
+      { id: "f4", name: "IU", photo: "iu.png" },
     ],
   },
   {
@@ -15,6 +16,7 @@ const initialCategories = [
       { id: "f1", name: "IU", photo: "iu.png" },
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
+      { id: "f4", name: "IU", photo: "iu.png" },
     ],
   },
   {
@@ -24,6 +26,7 @@ const initialCategories = [
       { id: "f1", name: "IU", photo: "iu.png" },
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
+      { id: "f4", name: "IU", photo: "iu.png" },
     ],
   },
 ];
