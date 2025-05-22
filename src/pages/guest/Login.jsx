@@ -1,63 +1,69 @@
 import { createSignal, Match, Switch } from "solid-js"
+import "./Login.css"
+import logo from "../../assets/AALogo.png"
 
 function Login() {
     const [isLogin, setIsLogin ] = createSignal(true);
 
     return (
-        <div>
-            <label>
-                <input
-                    type="radio"
-                    name="loginRegister"
-                    checked={isLogin()}
-                    onChange={() => setIsLogin(true)}
-                />
-                Login
-            </label>
-            <label>
-                <input
-                    type="radio"
-                    name="loginRegister"
-                    checked={!isLogin()}
-                    onChange={() => setIsLogin(false)}
-                />
-                Register
-            </label>
+        <div class="page">
+            <img src={logo} alt="Artist-Awards-Logo" class="logo"/>
 
-            <Switch fallback={<p>Page Error : No Condition</p>}>
-                <Match when={isLogin()}>
-                    <div>
-                        <h2>Login Form</h2>
-                        <div>
-                            <p>Email Address</p>
-                            <input type="text" placeholder="email address" />
+            <div class="box">
+                <div class="toggle">
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="loginRegister"
+                            checked={isLogin()}
+                            onChange={() => setIsLogin(true)}
+                        />
+                        Login
+                    </label>
+                    <label class="option">
+                        <input
+                            type="radio"
+                            name="loginRegister"
+                            checked={!isLogin()}
+                            onChange={() => setIsLogin(false)}
+                        />
+                        Register
+                    </label>
+                </div>
+
+                <Switch fallback={<p>Page Error : No Condition</p>}>
+                    <Match when={isLogin()}>
+                        <div class="form">
+                            <div class="form-group">
+                                <p>Email Address</p>
+                                <input type="text" placeholder="email address" />
+                            </div>
+                            <div class="form-group">
+                                <p>Password</p>
+                                <input type="password" placeholder="password" />
+                            </div>
+                            <button class="submit-button">Login</button>
                         </div>
-                        <div>
-                            <p>Password</p>
-                            <input type="password" placeholder="password" />
+                    </Match>
+                    <Match when={!isLogin()}>
+                        <div class="form">
+                            <div class="form-group">
+                                <p>Username</p>
+                                <input type="text" placeholder="Username" />
+                            </div>
+                            <div class="form-group">
+                                <p>Email Address</p>
+                                <input type="text" placeholder="email address" />
+                            </div>
+                            <div class="form-group">
+                                <p>Password</p>
+                                <input type="password" placeholder="password" />
+                            </div>
+                            <button class="submit-button">Login</button>
                         </div>
-                        <button>Login</button>
-                    </div>
-                </Match>
-                <Match when={!isLogin()}>
-                    <div>
-                        <h2>Register Form</h2>
-                        <div>
-                            <p>Username</p>
-                            <input type="text" placeholder="Username" />
-                        </div>
-                        <div>
-                            <p>Email Address</p>
-                            <input type="text" placeholder="email address" />
-                        </div>
-                        <div>
-                            <p>Password</p>
-                            <input type="password" placeholder="password" />
-                        </div>
-                        <button>Login</button>
-                    </div>
-                </Match>
-            </Switch>
+                    </Match>
+                </Switch>          
+            </div>
         </div>
     )
 }
