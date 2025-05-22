@@ -23,7 +23,7 @@ export default function TeaserCandidates() {
                         </div>
                         )}
                     </For>
-                    
+                    <div class="more-candidates"></div>
                 </div>
             </div>
             )}
