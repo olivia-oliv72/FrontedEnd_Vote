@@ -1,5 +1,7 @@
 import { For } from "solid-js";
 import NavbarGuest from "../../components/navbarGuest";
+import "../../assets/guest/Home.css"
+import bannerImg from "../../assets/banner/banner.png"
 
 export default function Home() {
   return (
@@ -8,15 +10,15 @@ export default function Home() {
       <NavbarGuest/>
 
       {/* Banner */}
-      <div class="bg-black text-white py-8">
-        <h2 class="text-xl mb-2">Voting platform for Artist Award 2025!</h2>
-        <p>Discover the nominees and vote for your favorite artist.</p>
+      <div class="container-banner">
+        <img src={bannerImg} alt="" />
+        <p>Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.</p>
       </div>
 
       {/* Countdown Time*/}
-      <div class="my-6">
-        <h2 class="text-lg font-bold">Remaining Time:</h2>
-        <p class="text-2xl font-mono">00:00:00</p>
+      <div class="container-timer">
+        <h1>Remaining Time:</h1>
+        <h1>00:00:00</h1>
       </div>
 
       {/* Categories */}

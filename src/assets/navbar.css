@@ -4,6 +4,8 @@
     display: flex;
     justify-content: space-between;
     padding: 15px;
+    background-color: rgb(169, 254, 197);
+    align-items: center;
 }
 
 #header {
