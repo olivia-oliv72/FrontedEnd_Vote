@@ -1,11 +1,17 @@
-.container-candidates, .container-name-candidates {
+.container-candidates {
     display: flex;
     flex-direction: column;
-    padding: 15px;
+}
+.container-name-candidates {
+    display: flex;
+    flex-direction: column;
+    padding: 0 15px 30px 0;
 }
 .container-name-candidates h3 {
     background-color: rgb(174 168 178);
     padding: 5px;
+    margin-top: 0;
+    padding-left: 10px;
 }
 .photo-candidates{
     display: flex;
@@ -25,10 +31,22 @@
     left: 20px;
     background-color: aliceblue;
     padding-right: 140px;
-    padding-left: 5px;
+    padding-left: 8px;
+    font-size: 20px;
 }
 .more-candidates {
     height: 200px;
     width: 200px;
     background-color: rgb(174 168 178);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.more-candidates span {
+    font-size: 23px;
+}
+.more-candidates img {
+    height: 60px;
+    width: 70px;
 }

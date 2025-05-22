@@ -1,6 +1,7 @@
 import { loadCategories } from "../../utils/localStorage";
 import { For } from "solid-js";
 import "../../assets/css/guest/TeaserCandidates.css"
+import arrow from "../../assets/img/arrow.png"
 
 export default function TeaserCandidates() {
   const categories = loadCategories();
@@ -23,7 +24,11 @@ export default function TeaserCandidates() {
                         </div>
                         )}
                     </For>
-                    <div class="more-candidates"></div>
+                    <div class="more-candidates">
+                        <span>View more</span>
+                        <span>candidates</span>
+                        <img src={arrow} alt="arrow" />
+                    </div>
                 </div>
             </div>
             )}
