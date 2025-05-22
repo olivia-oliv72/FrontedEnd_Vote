@@ -1,6 +1,6 @@
 /*css untuk home guest */
 
-/*banner*/
+/*Banner*/
 .container-banner {
     background-color: bisque;
     position: relative;
@@ -38,4 +38,12 @@
 }
 .container-timer h1 {
     margin: 0px;
+}
+
+/*Footer*/
+.footer{
+    background-color: grey;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

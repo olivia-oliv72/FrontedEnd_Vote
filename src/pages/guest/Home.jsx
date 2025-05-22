@@ -25,7 +25,7 @@ export default function Home() {
 
 
       {/* Footer */}
-      <div class="mt-10 bg-gray-200 text-sm py-2">
+      <div class="footer">
         Thank you for supporting your favorite artists. © 2025 Artist Award.
       </div>
     </div>
