@@ -1,7 +1,7 @@
 import { Router, Route } from "@solidjs/router";
 
 import Home from "./pages/guest/Home";
-// import Login from "./pages/guest/Login";
+import Login from "./pages/guest/Login";
 // import Register from "./pages/guest/Register";
 
 // import Voting from "./pages/voter/Voting";
@@ -17,7 +17,8 @@ function App() {
     <Router>
       {/* Halaman umum */}
       <Route path="/" component={Home} />
-      
+      <Route path="/login" component={Login}/>
+
     </Router>
   );
 }
