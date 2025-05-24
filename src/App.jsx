@@ -1,6 +1,6 @@
 import { Router, Route } from "@solidjs/router";
 
-import Home from "./pages/guest/Home";
+import Home from "./pages/guest/home/Home";
 import Login from "./pages/guest/Login";
 // import Register from "./pages/guest/Register";
 

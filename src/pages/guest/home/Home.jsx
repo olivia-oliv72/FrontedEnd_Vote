@@ -1,6 +1,6 @@
-import NavbarGuest from "../../components/NavbarGuest";
-import "../../assets/css/guest/Home.css"
-import bannerImg from "../../assets/img/banner.png"
+import NavbarGuest from "../../../components/Navbar";
+import "../../../assets/css/guest/Home.css"
+import bannerImg from "../../../assets/img/banner.png"
 import TeaserCandidates from "./TeaserCandidates";
 
 export default function Home() {
