@@ -1,6 +1,6 @@
 import { createSignal, Match, Switch } from "solid-js"
-import "./Login.css"
-import logo from "../../assets/AALogo.png"
+import "../../assets/css/guest/Login.css"
+import logo from "../../assets/img/AALogo.png"
 
 function Login() {
     const [isLogin, setIsLogin ] = createSignal(true);

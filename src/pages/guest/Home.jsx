@@ -1,4 +1,3 @@
-import { For } from "solid-js";
 import NavbarGuest from "../../components/NavbarGuest";
 import "../../assets/css/guest/Home.css"
 import bannerImg from "../../assets/img/banner.png"
@@ -6,7 +5,7 @@ import TeaserCandidates from "./TeaserCandidates";
 
 export default function Home() {
   return (
-    <div class="font-sans text-center">
+    <div>
       {/* Header */}
       <NavbarGuest/>
 

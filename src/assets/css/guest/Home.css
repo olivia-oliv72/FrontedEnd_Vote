@@ -1,5 +1,7 @@
 /*css untuk home guest */
-
+body {
+    margin : 0px;
+}
 /*Banner*/
 .container-banner {
     background-color: rgb(174 168 178);
