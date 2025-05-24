@@ -8,16 +8,19 @@ import Login from "./pages/guest/Login";
 // import Confirmation from "./pages/voter/Confirmation";
 // import Profile from "./pages/voter/Profile";
 
-// import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from "./pages/admin/Dashboard";
 // import AddCategory from "./pages/admin/AddCategory";
 // import EditCategory from "./pages/admin/EditCategory";
 
 function App() {
   return (
     <Router>
-      {/* Halaman umum */}
+      
       <Route path="/" component={Home} />
       <Route path="/login" component={Login}/>
+
+      {/* admin */}
+      <Route path="/Dashboard" component={AdminDashboard}/>
 
     </Router>
   );
