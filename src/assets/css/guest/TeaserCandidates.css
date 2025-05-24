@@ -7,6 +7,10 @@
     flex-direction: column;
     padding: 0 15px 30px 0;
 }
+.container-name-candidates a {
+    text-decoration: none;
+    color: black;
+}
 .container-name-candidates h3 {
     background-color: rgb(174 168 178);
     padding: 5px;
