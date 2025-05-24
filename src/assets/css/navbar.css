@@ -11,3 +11,31 @@
 #header {
     margin: 0;
 }
+
+img {
+    width: 40px;
+    height: 35px;
+}
+
+span {
+    font-size: 20px;
+}
+
+.container-nav-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+}
+
+.container-nav-user a{
+    font-size: 20px;
+    color: black;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180px;
+}
