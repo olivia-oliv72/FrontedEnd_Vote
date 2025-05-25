@@ -8,7 +8,9 @@ export default function NavbarGuest() {
   const user = getUser(); // null kalau belum login
   const role = getUserRole();     // "admin", "user", atau null (guest)
 
-
+  function handleHome() {
+    navigate('/')
+  }
   return (
 
     <nav class="navigation">
@@ -35,11 +37,10 @@ export default function NavbarGuest() {
 
           <Match when={user?.role === "admin"}>
             {/* Admin */}
-
             <div class="user">
               <span>Welcome, {user.username}!</span>
               <img src={img_user} alt="image_user" />
-
+            </div>
           </Match>
         </Switch>
 
