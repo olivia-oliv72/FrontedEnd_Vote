@@ -18,7 +18,6 @@ function App() {
       {/* Halaman umum */}
       <Route path="/" component={Home} />
       <Route path="/login" component={Login}/>
-
     </Router>
   );
 }
