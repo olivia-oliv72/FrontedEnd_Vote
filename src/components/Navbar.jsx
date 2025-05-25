@@ -6,7 +6,7 @@ import img_user from "../assets/img/logo_user.png"
 export default function NavbarGuest() {
   const user = getUser(); // null kalau belum login
   const role = getUserRole();     // "admin", "user", atau null (guest)
-  
+
   return (
 
     <nav class="navigation">
@@ -16,7 +16,7 @@ export default function NavbarGuest() {
         <Switch>
           <Match when={!user}>
             {/* Guest */}
-            <a href="/Login">Login/Register</a>
+            <a href="/login">Login/Register</a>
           </Match>
 
           <Match when={user?.role === "user"}>
@@ -33,7 +33,10 @@ export default function NavbarGuest() {
 
           <Match when={user?.role === "admin"}>
             {/* Admin */}
-            
+            <div class="user">
+              <span>Welcome, {user.username}!</span>
+              <img src={img_user} alt="image_user" />
+            </div>
           </Match>
         </Switch>
 

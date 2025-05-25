@@ -18,7 +18,13 @@ function Login() {
 
     if (user) {
       saveUser(user); // simpan ke localStorage
-      navigate("/");  // redirect ke homepage
+      if (user.role === "admin") {
+        navigate("/admin");  // redirect to admin dashboard
+      } else if (user.role === "user") {
+        navigate("/");   // redirect to home for user role
+      } else {
+        navigate("/login");  // fallback to login if role unknown
+      }
     } else {
       alert("Username atau password salah");
     }
