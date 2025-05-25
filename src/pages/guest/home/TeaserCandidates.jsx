@@ -8,9 +8,10 @@ export default function TeaserCandidates() {
     const categories = loadCategories();
     const navigate = useNavigate();
 
-    function redirectToVoting() {
-        navigate("/voting");
+    function redirectToVoting(categoryId) {
+        navigate(`/voting/${categoryId}`);
     }
+
 
 
     return (
@@ -34,7 +35,7 @@ export default function TeaserCandidates() {
                                 )}
                             </For>
                             <a href="">
-                                <div class="more-candidates" onClick={redirectToVoting}>
+                                <div class="more-candidates" onClick={() => redirectToVoting(category.id)}>
                                     <span>View more</span>
                                     <span>candidates</span>
                                     <img src={arrow} alt="arrow" />

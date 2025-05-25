@@ -7,6 +7,9 @@ const initialCategories = [
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
       { id: "f4", name: "IU", photo: "iu.png" },
+      { id: "f5", name: "IU", photo: "iu.png" },
+      { id: "f6", name: "IU", photo: "iu.png" },
+      { id: "f7", name: "IU", photo: "iu.png" },
     ],
   },
   {
@@ -17,6 +20,9 @@ const initialCategories = [
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
       { id: "f4", name: "IU", photo: "iu.png" },
+      { id: "f5", name: "IU", photo: "iu.png" },
+      { id: "f6", name: "IU", photo: "iu.png" },
+      { id: "f7", name: "IU", photo: "iu.png" },
     ],
   },
   {
@@ -27,6 +33,9 @@ const initialCategories = [
       { id: "f2", name: "IU", photo: "iu.png" },
       { id: "f3", name: "IU", photo: "iu.png" },
       { id: "f4", name: "IU", photo: "iu.png" },
+      { id: "f5", name: "IU", photo: "iu.png" },
+      { id: "f6", name: "IU", photo: "iu.png" },
+      { id: "f7", name: "IU", photo: "iu.png" },
     ],
   },
 ];
