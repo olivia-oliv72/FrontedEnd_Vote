@@ -1,5 +1,3 @@
-.page-container {}
-
 .bannerImg {
     width: 100%;
     object-fit: cover;
@@ -36,11 +34,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin: 25px 0 25px 0;
 }
 
 .candidates-list {
     display: flex;
     align-items: center;
+    column-gap: 50px;
 }
 
 .leftArrow {
@@ -109,4 +109,12 @@
 
 .voteButton button:hover {
     background-color: rgb(174, 174, 174);
+}
+
+.footer {
+    background-color: rgb(174 168 178);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 17px;
 }
