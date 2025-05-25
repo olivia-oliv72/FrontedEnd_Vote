@@ -17,7 +17,7 @@ function App() {
     <Router>
       {/* Halaman umum */}
       <Route path="/" component={Home} />
-      <Route path="/login" component={Login} />
+      <Router path="/login" component={Login} />
       <Router path="/voting" component={Voting} />
 
     </Router>
