@@ -5,11 +5,13 @@ import "../../assets/css/voter/Voting.css";
 import { For } from "solid-js";
 import initialCategories from "../../assets/data/category_candidate.js"
 import { useParams } from "@solidjs/router";
+import { useNavigate } from "@solidjs/router";
 
 
 function Voting() {
     const params = useParams();
     const categoryId = params.categoryId;
+    const navigate = useNavigate();
 
     const category = initialCategories.find((category) => category.id === categoryId);
 
@@ -24,6 +26,11 @@ function Voting() {
             </>
         );
     }
+
+    function handleVote() {
+        navigate(`/confirmation/${categoryId}`);
+    }
+
 
     return (
         <div class="page-container">
@@ -78,7 +85,7 @@ function Voting() {
                         </div>
                     </div>
 
-                    <div class="voteButton">
+                    <div class="voteButton" onclick={handleVote}>
                         <button>Vote</button>
                     </div>
                 </div>

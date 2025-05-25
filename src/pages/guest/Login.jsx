@@ -54,10 +54,10 @@ function Login() {
           <Match when={isLogin()}>
             <div class="form">
               <div class="form-group">
-                <p>Username</p>
+                <p>Email Address</p>
                 <input
                   type="text"
-                  placeholder="Username"
+                  placeholder="email address"
                   value={username()}
                   onInput={(e) => setUsername(e.target.value)}
                 />

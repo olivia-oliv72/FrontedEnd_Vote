@@ -5,7 +5,7 @@ import Login from "./pages/guest/Login";
 // import Register from "./pages/guest/Register";
 
 import Voting from "./pages/voter/Voting";
-// import Confirmation from "./pages/voter/Confirmation";
+import Confirmation from "./pages/voter/Confirmation";
 // import Profile from "./pages/voter/Profile";
 
 // import AdminDashboard from "./pages/admin/Dashboard";
@@ -17,10 +17,9 @@ function App() {
     <Router>
       {/* Halaman umum */}
       <Route path="/" component={Home} />
-
       <Route path="/login" component={Login} />
       <Route path="/voting/:categoryId" component={Voting} />
-
+      <Route path="/confirmation/:categoryId" component={Confirmation} />
 
     </Router>
   );
