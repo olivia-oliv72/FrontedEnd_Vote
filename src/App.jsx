@@ -17,8 +17,10 @@ function App() {
     <Router>
       {/* Halaman umum */}
       <Route path="/" component={Home} />
+
       <Route path="/login" component={Login} />
       <Route path="/voting/:categoryId" component={Voting} />
+
 
     </Router>
   );
