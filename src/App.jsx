@@ -8,7 +8,7 @@ import Voting from "./pages/voter/Voting";
 import Confirmation from "./pages/voter/Confirmation";
 // import Profile from "./pages/voter/Profile";
 
-// import AdminDashboard from "./pages/admin/Dashboard";
+import AdminDashboard from "./pages/admin/Dashboard";
 // import AddCategory from "./pages/admin/AddCategory";
 // import EditCategory from "./pages/admin/EditCategory";
 
@@ -20,6 +20,7 @@ function App() {
       <Route path="/login" component={Login} />
       <Route path="/voting/:categoryId" component={Voting} />
       <Route path="/confirmation/:categoryId" component={Confirmation} />
+      <Route path="/admin" component={AdminDashboard} />
 
     </Router>
   );
