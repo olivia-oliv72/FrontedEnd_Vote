@@ -40,6 +40,7 @@ function Profile(){
                         )
                     }
                     <p class="email">{user.email}</p>
+                    <a class="logout" href="/logout">Logout</a>
                 </div>
             </div>
             <div class="container-title">

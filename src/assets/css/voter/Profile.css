@@ -24,6 +24,7 @@
     grid-template-areas: 'pfp info';
     padding: 30px;
     column-gap: 30px;
+    align-items: center;
     justify-content: center;
 }
 
@@ -32,10 +33,15 @@
     justify-content: center;
 }
 
-.username, .email{
+.username, .email, .logout{
     display: flex;
     margin: 10px;
     column-gap: 30px;
+}
+
+.logout{
+    color: #2d2d2b50;
+    text-decoration: none;
 }
 
 .icon-edit, .icon-confirm{
