@@ -27,7 +27,7 @@ export default function NavbarGuest() {
             {/* User */}
             <div class="container-nav-user">
               <a onClick={handleHome}>Home</a>
-              <a href="">History</a>
+              <a href="/History">History</a>
               <div class="user">
                 <span>Welcome, {user.username}!</span>
                 <img src={img_user} alt="image_user" />
