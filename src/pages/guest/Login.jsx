@@ -96,7 +96,7 @@ function Login() {
                 <p>Password</p>
                 <input type="password" placeholder="password" />
               </div>
-              <button class="submit-button">Register</button>
+              <button class="submit-button" onClick={() => setIsLogin(true)}>Register</button>
             </div>
           </Match>
         </Switch>
