@@ -6,6 +6,8 @@ import { For } from "solid-js";
 import initialCategories from "../../assets/data/category_candidate.js"
 import { useParams } from "@solidjs/router";
 import { useNavigate } from "@solidjs/router";
+import Banner from "../../components/banner.jsx"
+import Footer from "../../components/footer.jsx"
 
 
 function Voting() {
@@ -19,9 +21,7 @@ function Voting() {
         return (
             <>
                 <NavbarGuest />
-                <div class="banner-container">
-                    <img src={bannerImg} alt="Banner" class="bannerImg" />
-                </div>
+                <Banner/>
                 <h1>Category not found</h1>
             </>
         );
@@ -33,13 +33,11 @@ function Voting() {
 
 
     return (
-        <div class="page-container">
+        <div class="page-voting-container">
             {/* Header */}
             <NavbarGuest />
 
-            <div class="banner-container">
-                <img src={bannerImg} alt="Banner" class="bannerImg" />
-            </div>
+            <Banner/>
 
             <div class="voting-container">
                 <div class="voting-header">
@@ -90,18 +88,9 @@ function Voting() {
                     </div>
                 </div>
 
-
-
-
-
-
             </div>
 
-            <div class="footer">
-                Thank you for supporting your favorite artists. © 2025 Artist Award.
-            </div>
-
-
+            <Footer/>
         </div >
     );
 

@@ -16,7 +16,7 @@ import EditCategory from "./pages/admin/EditCategory";
 function App() {
   return (
     <Router>
-      {/* Halaman umum */}
+      
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />

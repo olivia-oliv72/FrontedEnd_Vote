@@ -41,6 +41,9 @@ a {
     font-size: 20px;
     color: black;
 }
+.container-nav-user a:hover {
+    color: blue;
+}
 
 .user {
     display: flex;

@@ -5,6 +5,7 @@ import { getUser } from "../../utils/authentication";
 import edit from "../../assets/img/edit.png";
 import checked from "../../assets/img/checked.png";
 import { createSignal } from "solid-js";
+import Footer from "../../components/footer.jsx";
 
 function Profile() {
     const user = getUser();
@@ -19,7 +20,8 @@ function Profile() {
     }
 
     return (
-        <>
+<>
+        <div class="page-profile-container">
             <NavbarGuest />
             {/* Profile */}
             <div class="container-profile">
@@ -52,6 +54,7 @@ function Profile() {
                 Thank you for supporting your favorite artists. © 2025 Artist Award.
             </div>
         </>
+
     )
 }
 

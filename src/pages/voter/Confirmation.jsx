@@ -4,6 +4,8 @@ import candidatePict from "../../assets/img/iu.png"
 import initialCategories from "../../assets/data/category_candidate.js"
 import { useNavigate, useParams } from "@solidjs/router";
 import "../../assets/css/voter/confirmation.css";
+import Footer from "../../components/footer.jsx";
+import Banner from "../../components/banner.jsx";
 
 function Confirmation() {
     const params = useParams();
@@ -17,12 +19,10 @@ function Confirmation() {
     }
 
     return (
-        <div class="page-container">
+        <div class="page-voting-container">
             <NavbarGuest />
 
-            <div class="banner-container">
-                <img src={bannerImg} alt="Banner" class="bannerImg" />
-            </div>
+            <Banner/>
 
             <div class="confirmation-container">
                 <h1>Voting Complete!</h1>
@@ -35,9 +35,7 @@ function Confirmation() {
                 <button onClick={backToHome}>Back To Homepage</button>
             </div>
 
-            <div class="footer">
-                Thank you for supporting your favorite artists. © 2025 Artist Award.
-            </div>
+            <Footer/>
         </div>
     )
 }
