@@ -17,7 +17,7 @@ function Confirmation() {
     }
 
     return (
-        <div class="page-container">
+        <div class="page-voting-container">
             <NavbarGuest />
 
             <div class="banner-container">

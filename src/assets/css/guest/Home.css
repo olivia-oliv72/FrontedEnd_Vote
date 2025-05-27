@@ -1,26 +1,26 @@
 /*css untuk home guest */
 body {
-    margin : 0px;
+    margin: 0px;
 }
+
 /*Banner*/
 .container-banner {
     background-color: rgb(174 168 178);
     position: relative;
     width: 100%;
-    height: 330px;
+    height: 400px;
     overflow: hidden;
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
 }
+
 .container-banner img {
-    background-color: rgb(174 168 178);
-    position: relative;
     width: 100%;
-    height: 300px;
-    overflow: hidden;
-    font-family: sans-serif;
+    object-fit: cover;
+    height: 100%
 }
+
 .container-banner p {
     background-color: rgb(174 168 178);
     padding: 5px;
@@ -38,12 +38,13 @@ body {
     align-items: center;
     gap: 7px;
 }
+
 .container-timer h1 {
     margin: 0px;
 }
 
 /*Footer*/
-.footer{
+.footer {
     background-color: rgb(174 168 178);
     display: flex;
     justify-content: center;

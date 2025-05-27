@@ -1,7 +1,3 @@
-* {
-    box-sizing: border-box;
-}
-
 .page-container {
     display: flex;
     flex-direction: column;
@@ -17,10 +13,13 @@
 }
 
 .confirmation-container {
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
 }
 
 .confirmation-container img {
@@ -35,11 +34,11 @@
     align-items: center;
 }
 
-h2 {
+.text h2 {
     margin-bottom: 0;
 }
 
-h3 {
+.text h3 {
     margin-top: 0;
 }
 

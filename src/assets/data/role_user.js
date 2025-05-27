@@ -9,6 +9,7 @@ const roleUsers = [
     id: 2,
     username: "user1",
     password: "user123",
+    email: "user@gmail.com",
     role: "user",
   }
 ];

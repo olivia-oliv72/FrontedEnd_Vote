@@ -1,0 +1,24 @@
+.title {
+    padding-left: 3%
+}
+
+.button-table {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.add-category-button {
+    width: 30%;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 40px
+}
+
+.page-container {
+    margin: 2vh;
+}

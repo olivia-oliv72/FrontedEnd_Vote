@@ -6,13 +6,12 @@ import { useNavigate } from "@solidjs/router";
 
 export default function NavbarGuest() {
   const user = getUser(); // null kalau belum login
-  const role = getUserRole();     // "admin", "user", atau null (guest)
-  const navigate = useNavigate();
+  const role = getUserRole();
+  const navigate = useNavigate();   // "admin", "user", atau null (guest)
 
   function handleHome() {
     navigate('/')
   }
-
   return (
 
     <nav class="navigation">
@@ -22,14 +21,14 @@ export default function NavbarGuest() {
         <Switch>
           <Match when={!user}>
             {/* Guest */}
-            <a href="/Login">Login/Register</a>
+            <a href="/login">Login/Register</a>
           </Match>
 
           <Match when={user?.role === "user"}>
             {/* User */}
             <div class="container-nav-user">
               <a onClick={handleHome}>Home</a>
-              <a href="">History</a>
+              <a href="/History">History</a>
               <div class="user">
                 <span>Welcome, {user.username}!</span>
                 <img src={img_user} alt="image_user" />
@@ -39,7 +38,10 @@ export default function NavbarGuest() {
 
           <Match when={user?.role === "admin"}>
             {/* Admin */}
-
+            <div class="user">
+              <span>Welcome, {user.username}!</span>
+              <img src={img_user} alt="image_user" />
+            </div>
           </Match>
         </Switch>
 
