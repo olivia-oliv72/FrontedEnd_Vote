@@ -27,11 +27,12 @@
 
 .container-profile {
     display: grid;
+    width: 100px;
     grid-template-areas: 'pfp info';
     padding: 30px;
+    padding-left: 50px;
     column-gap: 30px;
     align-items: center;
-    justify-content: center;
 }
 
 .container-info {
