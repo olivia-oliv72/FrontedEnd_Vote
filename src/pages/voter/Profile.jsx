@@ -5,6 +5,7 @@ import { getUser } from "../../utils/authentication";
 import edit from "../../assets/img/edit.png";
 import checked from "../../assets/img/checked.png";
 import { createSignal } from "solid-js";
+import Footer from "../../components/footer.jsx";
 
 function Profile() {
     const user = getUser();
@@ -48,9 +49,7 @@ function Profile() {
             </div>
             <History />
 
-            <div class="footer">
-                Thank you for supporting your favorite artists. © 2025 Artist Award.
-            </div>
+            <Footer/>
         </div>
     )
 }

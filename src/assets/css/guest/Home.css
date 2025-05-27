@@ -8,7 +8,7 @@ body {
     background-color: rgb(174 168 178);
     position: relative;
     width: 100%;
-    height: 400px;
+    height: 365px;
     overflow: hidden;
     font-family: sans-serif;
     display: flex;
@@ -21,7 +21,7 @@ body {
     height: 100%
 }
 
-.container-banner p {
+#banner-p {
     background-color: rgb(174 168 178);
     padding: 5px;
     padding-left: 15px;
