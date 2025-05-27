@@ -3,6 +3,7 @@ import { getUser, getUserRole } from "../utils/authentication";
 import { Switch, Match } from "solid-js";
 import img_user from "../assets/img/logo_user.png"
 import { useNavigate } from "@solidjs/router";
+import logout from "../assets/img/logout.png";
 
 export default function NavbarGuest() {
   const user = getUser(); // null kalau belum login
@@ -38,8 +39,11 @@ export default function NavbarGuest() {
           <Match when={user?.role === "admin"}>
             {/* Admin */}
             <div class="user">
+
               <span>Welcome, {user.username}!</span>
               <img src={img_user} alt="image_user" />
+              <a class="logout-admin" href="/logout"><img src={logout}></img></a>
+
             </div>
           </Match>
         </Switch>

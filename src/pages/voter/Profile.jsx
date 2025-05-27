@@ -6,25 +6,25 @@ import edit from "../../assets/img/edit.png";
 import checked from "../../assets/img/checked.png";
 import { createSignal } from "solid-js";
 
-function Profile(){
+function Profile() {
     const user = getUser();
     const [editing, setEditing] = createSignal(false);
     const [newUsername, setNewUsername] = createSignal(user.username);
-    
-    function changeUsername(){
+
+    function changeUsername() {
         const updatedUser = { ...user, username: newUsername() };
         localStorage.setItem("logged_user", JSON.stringify(updatedUser));
         setEditing(false);
         location.reload();
     }
 
-    return(
+    return (
         <>
-            <NavbarGuest/>
+            <NavbarGuest />
             {/* Profile */}
             <div class="container-profile">
                 <div class="pfp">
-                    <ProfilePicture/>
+                    <ProfilePicture />
                 </div>
                 <div class="container-info">
                     {
@@ -36,7 +36,7 @@ function Profile(){
                         ) : (
                             <h2 class="username">{user.username}
                                 <img src={edit} alt="Edit Username" class="icon-edit" onClick={() => setEditing(true)}></img>
-                            </h2>   
+                            </h2>
                         )
                     }
                     <p class="email">{user.email}</p>
@@ -46,16 +46,16 @@ function Profile(){
             <div class="container-title">
                 <h2>Vote History</h2>
             </div>
-            <History/>
-            
+            <History />
+
             <div class="footer">
                 Thank you for supporting your favorite artists. © 2025 Artist Award.
             </div>
-        </>   
+        </>
     )
 }
 
-function ProfilePicture(){
+function ProfilePicture() {
     const user = getUser();
     const initial = user.username.charAt(0).toUpperCase();
     return (

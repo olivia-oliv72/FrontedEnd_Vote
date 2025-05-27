@@ -17,6 +17,10 @@ img {
     height: 35px;
 }
 
+.logout-admin {
+    height: 20px;
+}
+
 span {
     font-size: 20px;
 }
@@ -42,5 +46,15 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 200px;
+    width: fit-content;
+    column-gap: 10px;
+}
+
+.logout-admin img {
+    height: 20px;
+    width: 25px;
+}
+
+.logout-admin {
+    margin-left: 1vh;
 }
