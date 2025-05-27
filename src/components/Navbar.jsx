@@ -32,7 +32,7 @@ export default function NavbarGuest() {
               <a href="/History">History</a>
               <div class="user">
                 <span>Welcome, {user.username}!</span>
-                <img src={img_user} alt="image_user" />
+                <a href="/History"><img src={img_user} alt="image_user" /></a>
               </div>
             </div>
           </Match>
@@ -42,7 +42,6 @@ export default function NavbarGuest() {
             <div class="user">
 
               <span>Welcome, {user.username}!</span>
-              <img src={img_user} alt="image_user" />
               <a class="logout-admin" href="/logout"><img src={logout}></img></a>
 
             </div>

@@ -25,12 +25,12 @@ export default function TeaserCandidates() {
                             <For each={category.candidates.slice(0, 3)}>
                                 {(candidate) => (
                                     <div class="per-candidate">
-                                        <a href="">
-                                            <div class='box-more-candidates'>
-                                                <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
-                                                <p>{candidate.name}</p>
-                                            </div>
-                                        </a>
+
+                                        <div class='box-more-candidates'>
+                                            <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                                            <p>{candidate.name}</p>
+                                        </div>
+
                                     </div>
                                 )}
                             </For>

@@ -1,4 +1,12 @@
 /*css untuk navbar*/
+.navigation {
+    position: sticky;
+    top: 0;
+    /* THIS IS REQUIRED */
+    z-index: 10;
+    /* Higher value to stay on top */
+
+}
 
 .container {
     display: flex;
@@ -41,6 +49,7 @@ a {
     font-size: 20px;
     color: black;
 }
+
 .container-nav-user a:hover {
     color: blue;
 }
