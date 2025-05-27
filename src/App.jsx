@@ -10,8 +10,8 @@ import Profile from "./pages/voter/Profile";
 import Logout from "./pages/voter/Logout";
 
 import AdminDashboard from "./pages/admin/Dashboard";
-// import AddCategory from "./pages/admin/AddCategory";
-// import EditCategory from "./pages/admin/EditCategory";
+import AddCategory from "./pages/admin/AddCategory";
+import EditCategory from "./pages/admin/EditCategory";
 
 function App() {
   return (
@@ -19,7 +19,9 @@ function App() {
       
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
-      <Route path="/logout" component={Logout}/>
+      <Route path="/logout" component={Logout} />
+      <Route path="/add-category/:categoryId" component={AddCategory} />
+      <Route path="/edit-category/:categoryId" component={EditCategory} />
       <Route path="/voting/:categoryId" component={Voting} />
       <Route path="/confirmation/:categoryId" component={Confirmation} />
       <Route path="/admin" component={AdminDashboard} />

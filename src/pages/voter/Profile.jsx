@@ -20,6 +20,7 @@ function Profile() {
     }
 
     return (
+<>
         <div class="page-profile-container">
             <NavbarGuest />
             {/* Profile */}
@@ -49,8 +50,11 @@ function Profile() {
             </div>
             <History />
 
-            <Footer/>
-        </div>
+            <div class="footer">
+                Thank you for supporting your favorite artists. © 2025 Artist Award.
+            </div>
+        </>
+
     )
 }
 
