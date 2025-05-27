@@ -33,7 +33,7 @@ function Voting() {
 
 
     return (
-        <div class="page-container">
+        <div class="page-voting-container">
             {/* Header */}
             <NavbarGuest />
 

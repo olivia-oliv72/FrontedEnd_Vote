@@ -6,7 +6,8 @@ import { useNavigate } from "@solidjs/router";
 
 export default function NavbarGuest() {
   const user = getUser(); // null kalau belum login
-  const role = getUserRole();     // "admin", "user", atau null (guest)
+  const role = getUserRole();
+  const navigate = useNavigate();   // "admin", "user", atau null (guest)
 
   function handleHome() {
     navigate('/')

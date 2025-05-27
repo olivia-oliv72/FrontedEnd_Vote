@@ -1,8 +1,8 @@
-.container-main{
+.container-main {
     padding-left: 50px;
 }
 
-.container-history{
+.container-history {
     display: grid;
     grid-template-areas: 'photo info';
     padding: 20px;
@@ -11,7 +11,7 @@
     align-items: center;
 }
 
-.artist-photo{
+.artist-photo {
     grid-area: photo;
     width: 100px;
     height: 100px;
@@ -20,12 +20,13 @@
     align-items: center;
 }
 
-.container-info{
+.container-info {
     grid-area: info;
     justify-content: center;
 }
 
-.name, .artist{
+.name,
+.artist {
     display: flex;
     margin: 10px;
     column-gap: 30px;
