@@ -20,38 +20,37 @@ function Profile() {
     }
 
     return (
-<>
-        <div class="page-profile-container">
-            <NavbarGuest />
-            {/* Profile */}
-            <div class="container-profile">
-                <div class="pfp">
-                    <ProfilePicture />
+        <>
+            <div class="page-profile-container">
+                <NavbarGuest />
+                {/* Profile */}
+                <div class="container-profile">
+                    <div class="pfp">
+                        <ProfilePicture />
+                    </div>
+                    <div class="container-info">
+                        {
+                            editing() ? (
+                                <div class="container-edit-usn">
+                                    <input type="text" class="input-username" value={newUsername()} onInput={(e) => setNewUsername(e.target.value)}></input>
+                                    <img src={checked} class="icon-confirm" onClick={changeUsername}></img>
+                                </div>
+                            ) : (
+                                <h2 class="username">{user.username}
+                                    <img src={edit} alt="Edit Username" class="icon-edit" onClick={() => setEditing(true)}></img>
+                                </h2>
+                            )
+                        }
+                        <p class="email">{user.email}</p>
+                        <a class="logout" href="/logout">Logout</a>
+                    </div>
                 </div>
-                <div class="container-info">
-                    {
-                        editing() ? (
-                            <div class="container-edit-usn">
-                                <input type="text" class="input-username" value={newUsername()} onInput={(e) => setNewUsername(e.target.value)}></input>
-                                <img src={checked} class="icon-confirm" onClick={changeUsername}></img>
-                            </div>
-                        ) : (
-                            <h2 class="username">{user.username}
-                                <img src={edit} alt="Edit Username" class="icon-edit" onClick={() => setEditing(true)}></img>
-                            </h2>
-                        )
-                    }
-                    <p class="email">{user.email}</p>
-                    <a class="logout" href="/logout">Logout</a>
+                <div class="container-title">
+                    <h2>Vote History</h2>
                 </div>
-            </div>
-            <div class="container-title">
-                <h2>Vote History</h2>
-            </div>
-            <History />
+                <History />
 
-            <div class="footer">
-                Thank you for supporting your favorite artists. © 2025 Artist Award.
+                <Footer />
             </div>
         </>
 
