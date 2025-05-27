@@ -1,0 +1,33 @@
+.container-main {
+    padding-left: 50px;
+}
+
+.container-history {
+    display: grid;
+    grid-template-areas: 'photo info';
+    padding: 20px;
+    column-gap: 30px;
+    width: fit-content;
+    align-items: center;
+}
+
+.artist-photo {
+    grid-area: photo;
+    width: 100px;
+    height: 100px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.container-info {
+    grid-area: info;
+    justify-content: center;
+}
+
+.name,
+.artist {
+    display: flex;
+    margin: 10px;
+    column-gap: 30px;
+}

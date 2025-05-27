@@ -17,11 +17,13 @@ function Login() {
     );
 
     if (user) {
-      saveUser(user);
+      saveUser(user); // simpan ke localStorage
       if (user.role === "admin") {
-        navigate("/dashboard");  // redirect ke dashboard untuk admin
+        navigate("/admin");  // redirect to admin dashboard
+      } else if (user.role === "user") {
+        navigate("/");   // redirect to home for user role
       } else {
-        navigate("/");           // redirect ke homepage untuk user biasa
+        navigate("/login");  // fallback to login if role unknown
       }
     } else {
       alert("Username atau password salah");

@@ -21,6 +21,11 @@ span {
     font-size: 20px;
 }
 
+a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 .container-nav-user {
     display: flex;
     justify-content: space-between;
@@ -28,7 +33,7 @@ span {
     width: 400px;
 }
 
-.container-nav-user a{
+.container-nav-user a {
     font-size: 20px;
     color: black;
 }
@@ -40,5 +45,5 @@ span {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 180px;
+    width: 200px;
 }
