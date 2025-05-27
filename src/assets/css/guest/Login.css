@@ -15,7 +15,7 @@
 
 .box {
     width: 400px;
-    background-color: #EEEEEE;
+    background-color: rgba(174, 168, 178, 0.208);
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -26,7 +26,7 @@
 /* BUTTON */
 .toggle {
     display: flex;
-    background-color: #BFBFBF;
+    background-color: rgba(174, 168, 178, 0.428);
     border-radius: 1px solid #ccc;
     margin: 12px;
     border-radius: 5px;
@@ -46,7 +46,7 @@
 }
 
 .option:has(input:checked) {
-    background-color: #919191;
+    background-color: rgb(174 168 178);
     color: black;
 }
 
@@ -90,7 +90,7 @@
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
-    background-color: #919191;
+    background-color: rgb(174 168 178);
     border-radius: 5px;
 }
 
