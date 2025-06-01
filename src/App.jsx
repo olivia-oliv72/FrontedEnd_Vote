@@ -2,7 +2,6 @@ import { Router, Route } from "@solidjs/router";
 
 import Home from "./pages/guest/home/Home";
 import Login from "./pages/guest/Login";
-// import Register from "./pages/guest/Register";
 
 import Voting from "./pages/voter/Voting";
 import Confirmation from "./pages/voter/Confirmation";
@@ -13,20 +12,71 @@ import AdminDashboard from "./pages/admin/Dashboard";
 import AddCategory from "./pages/admin/AddCategory";
 import EditCategory from "./pages/admin/EditCategory";
 
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
+  console.log("App is running")
   return (
+    <>
     <Router>
-      
+      {/* Public */}
       <Route path="/" component={Home} />
       <Route path="/login" component={Login} />
       <Route path="/logout" component={Logout} />
-      <Route path="/add-category/:categoryId" component={AddCategory} />
-      <Route path="/edit-category/:categoryId" component={EditCategory} />
-      <Route path="/voting/:categoryId" component={Voting} />
-      <Route path="/confirmation/:categoryId" component={Confirmation} />
-      <Route path="/admin" component={AdminDashboard} />
-      <Route path="/history" component={Profile}></Route>
+
+      {/* Admin */}
+      <Route 
+        path="/admin" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AdminDashboard />
+          </ProtectedRoute>
+        )}
+      />
+      <Route 
+        path="/add-category/:categoryId" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <AddCategory />
+          </ProtectedRoute>
+        )}
+      />
+      <Route 
+        path="/edit-category/:categoryId" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <EditCategory />
+          </ProtectedRoute>
+        )}
+      />
+      
+      {/* User */}
+      <Route 
+        path="history" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["user"]}>
+            <Profile />
+          </ProtectedRoute>
+        )}
+      />
+      <Route 
+        path="/voting/:categoryId" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["user"]}>
+            <Voting />
+          </ProtectedRoute>
+        )}
+      />
+      <Route 
+        path="/confirmation/:categoryId" 
+        component={() => (
+          <ProtectedRoute allowedRoles={["user"]}>
+            <Confirmation />
+          </ProtectedRoute>
+        )}
+      />
     </Router>
+    </>
   );
 }
 
