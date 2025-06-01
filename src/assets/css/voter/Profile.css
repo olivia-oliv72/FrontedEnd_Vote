@@ -27,11 +27,12 @@
 
 .container-profile {
     display: grid;
+    width: 100px;
     grid-template-areas: 'pfp info';
     padding: 30px;
+    padding-left: 50px;
     column-gap: 30px;
     align-items: center;
-    justify-content: center;
 }
 
 .container-info {
@@ -62,7 +63,6 @@
     background-color: rgb(174 168 178);
     margin-top: 0;
     padding-left: 10px;
-    width: 100%;
 }
 
 .input-username {

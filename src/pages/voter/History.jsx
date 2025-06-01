@@ -20,7 +20,7 @@ export default function History(){
                                 <img class="artist-photo" src={`/photo-candidates/${vote.photo}`} alt={vote.name}></img>
                             </div>
                             <div class="container-info">
-                                <h1 class="name">{vote.category}</h1>
+                                <h1 class="name-category">{vote.category}</h1>
                                 <p class="artist">{vote.name}</p>
                             </div>
                         </div>

@@ -2,6 +2,8 @@ import NavbarGuest from "../../../components/Navbar";
 import "../../../assets/css/guest/Home.css"
 import bannerImg from "../../../assets/img/banner.png"
 import TeaserCandidates from "./TeaserCandidates";
+import Banner from "../../../components/banner"
+import Footer from "../../../components/footer"
 
 export default function Home() {
   return (
@@ -10,10 +12,9 @@ export default function Home() {
       <NavbarGuest/>
 
       {/* Banner */}
-      <div class="container-banner">
-        <img src={bannerImg} alt="" />
-        <p>Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.</p>
-      </div>
+      <Banner/>
+      <p id="banner-p">Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.</p>
+
 
       {/* Countdown Time*/}
       <div class="container-timer">
@@ -25,9 +26,7 @@ export default function Home() {
       <TeaserCandidates/>
 
       {/* Footer */}
-      <div class="footer">
-        Thank you for supporting your favorite artists. © 2025 Artist Award.
-      </div>
+      <Footer/>
     </div>
   );
 }

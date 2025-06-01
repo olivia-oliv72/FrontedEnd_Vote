@@ -13,8 +13,8 @@
 
 .artist-photo {
     grid-area: photo;
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     border-radius: 3px;
     display: flex;
     align-items: center;
@@ -25,9 +25,13 @@
     justify-content: center;
 }
 
-.name,
+.name-category,
 .artist {
     display: flex;
     margin: 10px;
     column-gap: 30px;
+}
+
+.artist{
+    font-size: 24px;
 }

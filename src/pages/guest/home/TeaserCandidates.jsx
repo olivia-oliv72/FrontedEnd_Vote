@@ -12,8 +12,6 @@ export default function TeaserCandidates() {
         navigate(`/voting/${categoryId}`);
     }
 
-
-
     return (
         <div class="container-candidates">
             <For each={categories}>
@@ -24,23 +22,21 @@ export default function TeaserCandidates() {
 
                             <For each={category.candidates.slice(0, 3)}>
                                 {(candidate) => (
-                                    <div class="per-candidate">
-                                        <a href="">
+                                    <div class="per-candidate" onClick={() => redirectToVoting(category.id)}>
+                                        
                                             <div class='box-more-candidates'>
                                                 <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
                                                 <p>{candidate.name}</p>
                                             </div>
-                                        </a>
+                                        
                                     </div>
                                 )}
                             </For>
-                            <a href="">
-                                <div class="more-candidates" onClick={() => redirectToVoting(category.id)}>
-                                    <span>View more</span>
-                                    <span>candidates</span>
-                                    <img src={arrow} alt="arrow" />
-                                </div>
-                            </a>
+                            <div class="more-candidates" onClick={() => redirectToVoting(category.id)}>
+                                <span>View more</span>
+                                <span>candidates</span>
+                                <img src={arrow} alt="arrow" />
+                            </div>
                         </div>
                     </div>
                 )}
