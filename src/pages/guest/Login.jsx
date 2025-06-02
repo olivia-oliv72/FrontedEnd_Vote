@@ -1,21 +1,17 @@
-// client/src/pages/guest/Login.jsx (atau path Anda)
 import { createSignal, Match, Switch } from "solid-js";
 import { useNavigate } from "@solidjs/router";
-// HAPUS: import roleUsers from "../../assets/data/role_user";
-import { saveUser } from "../../utils/authentication"; // Ini akan menyimpan user dari respons server
+import { saveUser } from "../../utils/authentication";
 import "../../assets/css/guest/Login.css";
 import logo from "../../assets/img/AALogo.png";
 
 function Login() {
-  const [isLogin, setIsLogin] = createSignal(true); // Untuk toggle Login/Register UI
+  const [isLogin, setIsLogin] = createSignal(true); 
   
-  // State untuk form Login
   const [loginUsername, setLoginUsername] = createSignal("");
   const [loginPassword, setLoginPassword] = createSignal("");
   const [loginMessage, setLoginMessage] = createSignal("");
   const [isLoadingLogin, setIsLoadingLogin] = createSignal(false);
 
-  // State untuk form Register (Anda bisa tambahkan ini nanti)
   const [registerUsername, setRegisterUsername] = createSignal("");
   const [registerEmail, setRegisterEmail] = createSignal("");
   const [registerPassword, setRegisterPassword] = createSignal("");
@@ -24,13 +20,13 @@ function Login() {
 
   const navigate = useNavigate();
 
-  async function handleLoginSubmit(event) { // Tambahkan event dan buat async
-    event.preventDefault(); // Mencegah submit form standar
+  async function handleLoginSubmit(event) { 
+    event.preventDefault(); 
     setIsLoadingLogin(true);
     setLoginMessage("");
 
     try {
-      const response = await fetch('http://localhost:8080/api/auth/login', { // Sesuaikan port jika perlu
+      const response = await fetch('http://localhost:8080/api/auth/login', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +41,7 @@ function Login() {
 
       if (response.ok && dataFromServer.success) {
         setLoginMessage("Login berhasil!");
-        saveUser(dataFromServer.user); // Simpan data user dari SERVER ke localStorage
+        saveUser(dataFromServer.user);
         
         // Navigasi berdasarkan peran dari server
         if (dataFromServer.user.role === "admin") {

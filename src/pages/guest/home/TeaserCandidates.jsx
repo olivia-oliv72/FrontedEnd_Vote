@@ -1,7 +1,6 @@
-// client/src/pages/guest/home/TeaserCandidates.jsx (sesuaikan path jika berbeda)
 import { createSignal, onMount, For, Show } from "solid-js";
-import "../../../assets/css/guest/TeaserCandidates.css"; // Pastikan path CSS benar
-import arrow from "../../../assets/img/arrow.png"; // Pastikan path gambar benar
+import "../../../assets/css/guest/TeaserCandidates.css";
+import arrow from "../../../assets/img/arrow.png";
 import { useNavigate } from "@solidjs/router";
 
 export default function TeaserCandidates() {
@@ -17,26 +16,13 @@ export default function TeaserCandidates() {
 
     try {
       const response = await fetch('http://localhost:8080/api/categories');
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error("TeaserCandidates.jsx - HTTP Error Response:", errorText);
-        throw new Error(`Gagal mengambil data. Status: ${response.status}. Pesan: ${errorText || response.statusText}`);
-      }
 
       const serverData = await response.json();
-      console.log('TeaserCandidates.jsx - Data mentah dari server /api/categories:', serverData);
 
-      if (Array.isArray(serverData)) {
-        setCategories(serverData);
-      } else {
-        console.error("TeaserCandidates.jsx - Data dari server BUKAN array:", serverData);
-        setCategories([]);
-        setError("Format data kategori dari server tidak sesuai. Harusnya array.");
-      }
+      setCategories(serverData);
+
     } catch (err) {
-      console.error("TeaserCandidates.jsx - Error saat fetch atau proses data:", err);
-      setError(err.message || "Terjadi kesalahan saat mengambil data kategori.");
+      setError(err.message);
       setCategories([]);
     } finally {
       setIsLoading(false);
@@ -65,14 +51,9 @@ export default function TeaserCandidates() {
               <div class="photo-candidates">
                 <For each={category.candidates?.slice(0, 3) || []}>
                   {(candidate) => {
-                    // === TAMBAHKAN CONSOLE.LOG DI SINI UNTUK DEBUG GAMBAR ===
-                    console.log(`TeaserCandidates.jsx - Data kandidat untuk kategori "${category.name}":`, candidate);
-                    // Periksa nilai candidate.photo di sini
-                    // =======================================================
                     return (
                       <div class="per-candidate" onClick={() => redirectToVoting(category.id)}>
                         <div class='box-more-candidates'>
-                          {/* Pastikan path gambar ini benar */}
                           <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
                           <p>{candidate.name}</p>
                         </div>
@@ -89,9 +70,6 @@ export default function TeaserCandidates() {
             </div>
           )}
         </For>
-      </Show>
-      <Show when={!isLoading() && !error() && categories().length === 0}>
-        <p>Tidak ada kategori kandidat yang ditampilkan saat ini.</p>
       </Show>
     </div>
   );
