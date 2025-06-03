@@ -1,3 +1,5 @@
+import fs from 'fs';
+import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import { roleUsers, initialCategories, history as votingHistory } from './data.js';
@@ -106,3 +108,34 @@ app.post('/api/categories', (req, res) => {
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
+
+app.put('/api/users/:id', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const { username } = req.body;
+
+  const user = roleUsers.find(u => u.id === userId);
+
+  if (!user) {
+    return res.status(404).json({ message: "User tidak ditemukan" });
+  }
+
+  user.username = username;
+  
+  saveDataToFile();
+
+  res.json({ message: "Username berhasil diubah", user });
+});
+
+function saveDataToFile() {
+    const dataFilePath = path.join(path.resolve(), 'data.js');
+
+    const fileContent =
+    `export const roleUsers = ${JSON.stringify(roleUsers, null, 2)};
+
+    export const initialCategories = ${JSON.stringify(initialCategories, null, 2)};
+
+    export const history = ${JSON.stringify(votingHistory, null, 2)};
+    `;
+
+    fs.writeFileSync(dataFilePath, fileContent, 'utf-8');
+}

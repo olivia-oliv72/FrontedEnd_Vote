@@ -12,11 +12,22 @@ function Profile() {
     const [editing, setEditing] = createSignal(false);
     const [newUsername, setNewUsername] = createSignal(user.username);
 
-    function changeUsername() {
+    async function changeUsername() {
         const updatedUser = { ...user, username: newUsername() };
-        localStorage.setItem("logged_user", JSON.stringify(updatedUser));
-        setEditing(false);
-        location.reload();
+
+        const response = await fetch(`http://localhost:8080/api/users/${user.id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: newUsername() }),
+        });
+
+        if (response.ok) {
+            localStorage.setItem("logged_user", JSON.stringify(updatedUser));
+            setEditing(false);
+            location.reload();
+        } else {
+            alert("Gagal memperbarui username di server");
+        }
     }
 
     return (
