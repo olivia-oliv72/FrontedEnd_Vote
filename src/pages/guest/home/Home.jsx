@@ -1,6 +1,5 @@
 import NavbarGuest from "../../../components/Navbar";
 import "../../../assets/css/guest/Home.css"
-import bannerImg from "../../../assets/img/banner.png"
 import TeaserCandidates from "./TeaserCandidates";
 import Banner from "../../../components/banner"
 import Footer from "../../../components/footer"
