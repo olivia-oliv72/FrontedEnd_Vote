@@ -20,7 +20,6 @@ function App() {
     <>
       <Router>
         {/* Public */}
-        <Route path="/" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
 
@@ -52,7 +51,15 @@ function App() {
 
         {/* User */}
         <Route
-          path="history"
+          path="/"
+          component={() => (
+            <ProtectedRoute allowedRoles={["user"]}>
+              <Home />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/history"
           component={() => (
             <ProtectedRoute allowedRoles={["user"]}>
               <Profile />

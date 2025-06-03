@@ -3,6 +3,7 @@ import { useNavigate } from "@solidjs/router";
 import { saveUser } from "../../utils/authentication";
 import "../../assets/css/guest/Login.css";
 import logo from "../../assets/img/AALogo.png";
+import { decode } from "../../utils/decode";
 
 function Login() {
   const [isLogin, setIsLogin] = createSignal(true); 
@@ -41,12 +42,21 @@ function Login() {
 
       if (response.ok && dataFromServer.success) {
         setLoginMessage("Login berhasil!");
-        saveUser(dataFromServer.user);
+        localStorage.setItem('auth_token', dataFromServer.token);
+        const user = decode(dataFromServer.token);
+
+        if (!user) {
+          console.error("Gagal decode token");
+          setLoginMessage("Token tidak valid.");
+          return;
+        }
+        
+        saveUser(user)
         
         // Navigasi berdasarkan peran dari server
-        if (dataFromServer.user.role === "admin") {
+        if (user.role === "admin") {
           navigate("/admin");
-        } else if (dataFromServer.user.role === "user") {
+        } else if (user.role === "user") {
           navigate("/");
         } else {
           // Fallback jika peran tidak dikenali, atau bisa juga navigasi ke halaman umum

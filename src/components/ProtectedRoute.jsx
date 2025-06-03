@@ -1,27 +1,28 @@
-import { createEffect, createSignal, Show } from "solid-js";
+import { createEffect, createSignal } from "solid-js";
+import { decode } from "../utils/decode"; // create this helper
 import { useNavigate } from "@solidjs/router";
-import { getUserRole, logoutUser } from "../utils/authentication";
 
 export default function ProtectedRoute(props) {
-    const navigate = useNavigate();
-    const [isAuthorized, setIsAuthorized] = createSignal(false);
+  const navigate = useNavigate();
+  const [isAuthorized, setIsAuthorized] = createSignal(false);
 
-    createEffect(() => {
-        const userRole = getUserRole()
-        const allowedRoles = props.allowedRoles;
-        
-        if (userRole && props.allowedRoles.includes(userRole)) {
-            setIsAuthorized(true);
-        } else {
-            logoutUser();
-            setIsAuthorized(false);
-            navigate('/login', { replace: true });
-        }
-    });
+  createEffect(() => {
+    const token = localStorage.getItem("auth_token");
+    if(!token){
+      navigate("/login", { replace: true });
+      return;
+    }
 
-    return (
-    <Show when={isAuthorized()}>
-      {props.children}
-    </Show>
-  );
+    const user = decode(token);
+    const allowedRoles = props.allowedRoles || [];
+
+    if(user && allowedRoles.includes(user.role)) {
+      setIsAuthorized(true);
+    } else{
+      localStorage.removeItem("auth_token");
+      navigate("/login", { replace: true });
+    }
+  });
+
+  return <Show when={isAuthorized()}>{props.children}</Show>;
 }

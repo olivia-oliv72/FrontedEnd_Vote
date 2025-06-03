@@ -3,12 +3,47 @@ import path from 'path';
 import express from 'express';
 import cors from 'cors';
 import { roleUsers, initialCategories, history as votingHistory } from './data.js';
+import crypto from 'crypto'
 
 const app = express();
 const PORT = 8080;
+const secret = 'frontedEnd_Vote'
 
 app.use(cors());
 app.use(express.json());
+
+function verify(token) {
+  if (!token || typeof token !== 'string') return null;
+
+  const parts = token.split('.');
+  if (parts.length !== 2) return null;
+
+  const plain = parts[0];
+  const receivedSig = parts[1];
+
+  const recalculatedSig = crypto
+    .createHmac('sha512', secret)
+    .update(plain)
+    .digest('base64');
+
+  if (receivedSig === recalculatedSig) {
+    return JSON.parse(Buffer.from(plain, 'base64').toString());
+  }
+
+  return null;
+}
+
+function authMiddleware(req, res, next) {
+  const token = req.headers.authorization;
+  const user = verify(token);
+
+  if (!user) {
+    return res.status(403).json({ message: 'Unauthorized - please log in first'})
+  }
+
+  req.user = user;
+  next();
+}
 
 app.get('/api/categories', (req, res) => {
   res.json(initialCategories);
@@ -22,6 +57,12 @@ app.get('/api/users', (req, res) => {
   res.json(usersWithoutPasswords);
 });
 
+function sign(data) {
+  const plain = Buffer.from(JSON.stringify(data)).toString('base64');
+  const sig = crypto.createHmac('sha512', secret).update(plain).digest('base64');
+  return `${plain}.${sig}`;
+}
+
 app.post('/api/auth/login', (req, res) => {
   const { username, password } = req.body;
 
@@ -33,13 +74,14 @@ app.post('/api/auth/login', (req, res) => {
 
   if (user) {
     const { password: _, ...userData } = user; 
-    res.json({ success: true, message: 'Login berhasil', user: userData });
+    const token = sign(userData);
+    res.json({ success: true, message: 'Login berhasil', token });
   } else {
     res.status(401).json({ success: false, message: 'Username atau password salah' });
   }
 });
 
-app.get('/api/history/:email', (req, res) => {
+app.get('/api/history/:email', authMiddleware, (req, res) => {
   const userEmail = req.params.email;
   const userHistory = votingHistory.find(h => h.email === userEmail);
 

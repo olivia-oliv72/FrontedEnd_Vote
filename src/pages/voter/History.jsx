@@ -17,7 +17,12 @@ export default function History() {
     setError(null);
 
     try {
-      const response = await fetch(`http://localhost:8080/api/history/${user.email}`); 
+      const token = localStorage.getItem('auth_token');
+      const response = await fetch(`http://localhost:8080/api/history/${user.email}`, {
+        headers: {
+          Authorization: token,
+        }
+      });
 
       if (!response.ok) {
         setUserVotes([]); 
