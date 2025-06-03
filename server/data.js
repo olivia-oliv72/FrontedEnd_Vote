@@ -1,20 +1,27 @@
+
 export const roleUsers = [
   {
     "id": 1,
     "username": "admin",
-    "password": "admin123",
+    "password": "$2b$10$/pJbIoX9U4R6Ij9vkjSV6uEFysVYHMAzT7BdMhtlol6vp9ko77hPi",
     "role": "admin"
   },
   {
     "id": 2,
-    "username": "username",
-    "password": "user123",
+    "username": "user1",
+    "password": "$2b$10$vrmqG4efVeylooFxdUV21e.IKvp4GDzr05XYZArZ.NAgZcNt75l7m",
     "email": "user@gmail.com",
+    "role": "user"
+  },
+  {
+    "id": 3,
+    "username": "angie",
+    "email": "a@gmail.com",
+    "password": "$2b$10$lbsqvpO9fRW4gGJxn3Ak5eJSbUBV7aCcwBNg6z13xFKDS4VmMI6M2",
     "role": "user"
   }
 ];
-
-    export const initialCategories = [
+export const initialCategories = [
   {
     "id": "female",
     "name": "Best Female Artist",
@@ -22,7 +29,7 @@ export const roleUsers = [
       {
         "id": "f1",
         "name": "IU",
-        "photo": "iu.png"
+        "photo": "iu.jpg"
       },
       {
         "id": "f2",
@@ -184,8 +191,7 @@ export const roleUsers = [
     ]
   }
 ];
-
-    export const history = [
+export const history = [
   {
     "email": "user@gmail.com",
     "vote": [
@@ -196,15 +202,14 @@ export const roleUsers = [
       },
       {
         "category": "Best Male",
-        "name": "Lim Youngwoong",
-        "photo": "youngwoong.jpg"
+        "name": "TXT",
+        "photo": "iu.png"
       },
       {
         "category": "Best Collaboration",
-        "name": "Zico ft. Jennie",
-        "photo": "zico-jennie.jpg"
+        "name": "Zico",
+        "photo": "iu.png"
       }
     ]
   }
 ];
-    
