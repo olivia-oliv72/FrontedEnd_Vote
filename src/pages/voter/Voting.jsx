@@ -1,99 +1,110 @@
-import NavbarGuest from "../../components/Navbar.jsx";
-import bannerImg from "../../assets/img/banner.png";
-import arrow from "../../assets/img/arrow.png"
+import NavbarGuest from "../../components/Navbar.jsx"
+import arrow from "../../assets/img/arrow.png";
 import "../../assets/css/voter/Voting.css";
-import { For } from "solid-js";
-import initialCategories from "../../assets/data/category_candidate.js"
-import { useParams } from "@solidjs/router";
-import { useNavigate } from "@solidjs/router";
-import Banner from "../../components/banner.jsx"
-import Footer from "../../components/footer.jsx"
-
+import { For, createSignal, onMount, Show } from "solid-js";
+import { useParams, useNavigate } from "@solidjs/router";
+import Banner from "../../components/banner.jsx";
+import Footer from "../../components/footer.jsx";
 
 function Voting() {
-    const params = useParams();
-    const categoryId = params.categoryId;
-    const navigate = useNavigate();
+  const params = useParams();
+  const categoryId = params.categoryId;
+  const navigate = useNavigate();
 
-    const category = initialCategories.find((category) => category.id === categoryId);
+  const [category, setCategory] = createSignal(null);
+  const [isLoading, setIsLoading] = createSignal(true);
+  const [error, setError] = createSignal(null);
 
-    if (!category) {
-        return (
-            <>
-                <NavbarGuest />
-                <Banner/>
-                <h1>Category not found</h1>
-            </>
-        );
+  onMount(async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch('http://localhost:8080/api/categories');
+      if (!response.ok) {
+        throw new Error(`Gagal mengambil data kategori. Status: ${response.status}`);
+      }
+      const serverCategories = await response.json();
+
+      const foundCategory = serverCategories.find(cat => cat.id === categoryId);
+      setCategory(foundCategory);
+
+    } catch (err) {
+      setError(err.message || "Terjadi kesalahan saat mengambil data.");
+    } finally {
+      setIsLoading(false);
     }
+  });
 
-    function handleVote() {
-        navigate(`/confirmation/${categoryId}`);
-    }
+  function handleVote() {
+    navigate(`/confirmation/${categoryId}`);
+  }
 
+  return (
+    <div class="page-voting-container">
+      <NavbarGuest />
+      <Banner />
 
-    return (
-        <div class="page-voting-container">
-            {/* Header */}
-            <NavbarGuest />
+      <Show when={isLoading()}>
+        <div class="voting-container">
+            <p>Memuat kategori...</p>
+        </div>
+      </Show>
 
-            <Banner/>
+      <Show when={error()}>
+         <div class="voting-container">
+            <p style={{ color: 'red' }}>Error: {error()}</p>
+        </div>
+      </Show>
 
-            <div class="voting-container">
-                <div class="voting-header">
-                    <div class="categoryHeader">
-                        <p>{category.name}</p>
-                    </div>
-                    <div class="searchBar">
-                        <input type="text" placeholder="Search Artist..." class="search-input" />
-                    </div>
-                </div>
-
-                <div class="candidates-button-container">
-                    <div class="candidates-list">
-                        <div class="leftArrow">
-                            <img src={arrow}></img>
-                        </div>
-                        <div class="candidates">
-                            <div class="candidates-row1">
-                                <For each={category.candidates.slice(0, 4)}>
-                                    {(candidate) => (
-                                        <div class="candidate-group">
-                                            <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
-                                            <p>{candidate.name}</p>
-                                        </div>
-                                    )}
-                                </For>
-                            </div>
-
-                            <div class="candidates-row2">
-                                <For each={category.candidates.slice(4, 8)}>
-                                    {(candidate) => (
-                                        <div class="candidate-group">
-                                            <p>{candidate.name}</p>
-                                            <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
-
-                                        </div>
-                                    )}
-                                </For>
-                            </div>
-                        </div>
-                        <div class="rightArrow">
-                            <img src={arrow}></img>
-                        </div>
-                    </div>
-
-                    <div class="voteButton" onclick={handleVote}>
-                        <button>Vote</button>
-                    </div>
-                </div>
-
+      <Show when={!isLoading() && !error() && category()}>
+        <div class="voting-container">
+          <div class="voting-header">
+            <div class="categoryHeader">
+              <p>{category()?.name}</p>
             </div>
+            <div class="searchBar">
+              <input type="text" placeholder="Search Artist..." class="search-input" />
+            </div>
+          </div>
 
-            <Footer/>
-        </div >
-    );
+          <div class="candidates-button-container">
+            <div class="candidates-list">
+              <div class="leftArrow"><img src={arrow} alt="Kiri" /></div>
+              <div class="candidates">
+                <div class="candidates-row1">
+                  <For each={category()?.candidates?.slice(0, 4) || []}>
+                    {(candidate) => (
+                      <div class="candidate-group">
+                        <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                        <p>{candidate.name}</p>
+                      </div>
+                    )}
+                  </For>
+                </div>
+                <div class="candidates-row2">
+                  <For each={category()?.candidates?.slice(4, 8) || []}>
+                    {(candidate) => (
+                      <div class="candidate-group">
+                        <p>{candidate.name}</p> 
+                        <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                      </div>
+                    )}
+                  </For>
+                </div>
+              </div>
+              <div class="rightArrow"><img src={arrow} alt="Kanan" /></div>
+            </div>
+            <div class="voteButton" onClick={handleVote}>
+              <button>Vote</button>
+            </div>
+          </div>
+        </div>
+      </Show>
 
+      <Footer />
+    </div>
+  );
 }
 
 export default Voting;

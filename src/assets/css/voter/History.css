@@ -35,3 +35,7 @@
 .artist{
     font-size: 24px;
 }
+
+.container-edit-usn {
+    display: flex;
+}

@@ -35,10 +35,10 @@
 }
 .per-candidate p {
     position: absolute;
-    bottom: 0;
-    left: 20px;
+    bottom: -5px;
+    left: 10px;
     background-color: aliceblue;
-    padding-right: 140px;
+    width: 170px;
     padding-left: 8px;
     font-size: 20px;
 }
