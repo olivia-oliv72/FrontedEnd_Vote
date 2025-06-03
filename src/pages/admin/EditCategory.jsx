@@ -208,10 +208,10 @@ export default function EditCategory() {
                         value={candidate.photo}
                         onInput={e => handleCandidateChange(index(), "photo", e.currentTarget.value)}
                       />
+                      <button type="button" class="remove-candidate-btn" onClick={() => handleRemoveCandidate(index())}>
+                        <img src={removeIcon} alt="Remove Candidate" style={{width: "20px", height: "20px"}}/>
+                      </button>
                     </div>
-                    <button type="button" class="remove-candidate-btn" onClick={() => handleRemoveCandidate(index())}>
-                      <img src={removeIcon} alt="Remove Candidate" style={{width: "20px", height: "20px"}}/>
-                    </button>
                   </div>
                 )}
               </For>
