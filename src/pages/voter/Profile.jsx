@@ -1,11 +1,11 @@
-import NavbarGuest from "../../components/Navbar.jsx";
 import "../../assets/css/voter/Profile.css";
+import NavbarGuest from "../../components/Navbar.jsx";
+import Footer from "../../components/footer.jsx";
 import History from "../voter/History.jsx";
-import { getUser } from "../../utils/authentication";
 import edit from "../../assets/img/edit.png";
 import checked from "../../assets/img/checked.png";
+import { getUser } from "../../utils/authentication";
 import { createSignal } from "solid-js";
-import Footer from "../../components/footer.jsx";
 
 function Profile() {
     const user = getUser();
@@ -23,7 +23,6 @@ function Profile() {
         <>
             <div class="page-profile-container">
                 <NavbarGuest />
-                {/* Profile */}
                 <div class="container-profile">
                     <div class="pfp">
                         <ProfilePicture />
