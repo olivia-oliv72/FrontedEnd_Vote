@@ -23,7 +23,6 @@ function Profile() {
         <>
             <div class="page-profile-container">
                 <NavbarGuest />
-                {/* Profile */}
                 <div class="container-profile">
                     <div class="pfp">
                         <ProfilePicture />
