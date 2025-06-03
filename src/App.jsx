@@ -18,64 +18,64 @@ function App() {
   console.log("App is running")
   return (
     <>
-    <Router>
-      {/* Public */}
-      <Route path="/" component={Home} />
-      <Route path="/login" component={Login} />
-      <Route path="/logout" component={Logout} />
+      <Router>
+        {/* Public */}
+        <Route path="/" component={Home} />
+        <Route path="/login" component={Login} />
+        <Route path="/logout" component={Logout} />
 
-      {/* Admin */}
-      <Route 
-        path="/admin" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminDashboard />
-          </ProtectedRoute>
-        )}
-      />
-      <Route 
-        path="/add-category/:categoryId" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AddCategory />
-          </ProtectedRoute>
-        )}
-      />
-      <Route 
-        path="/edit-category/:categoryId" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <EditCategory />
-          </ProtectedRoute>
-        )}
-      />
-      
-      {/* User */}
-      <Route 
-        path="history" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["user"]}>
-            <Profile />
-          </ProtectedRoute>
-        )}
-      />
-      <Route 
-        path="/voting/:categoryId" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["user"]}>
-            <Voting />
-          </ProtectedRoute>
-        )}
-      />
-      <Route 
-        path="/confirmation/:categoryId" 
-        component={() => (
-          <ProtectedRoute allowedRoles={["user"]}>
-            <Confirmation />
-          </ProtectedRoute>
-        )}
-      />
-    </Router>
+        {/* Admin */}
+        <Route
+          path="/admin"
+          component={() => (
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/add-category/:categoryId"
+          component={() => (
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AddCategory />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/edit-category/:categoryId"
+          component={() => (
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <EditCategory />
+            </ProtectedRoute>
+          )}
+        />
+
+        {/* User */}
+        <Route
+          path="history"
+          component={() => (
+            <ProtectedRoute allowedRoles={["user"]}>
+              <Profile />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/voting/:categoryId"
+          component={() => (
+            <ProtectedRoute allowedRoles={["user"]}>
+              <Voting />
+            </ProtectedRoute>
+          )}
+        />
+        <Route
+          path="/confirmation/:categoryId/:candidateId"
+          component={() => (
+            <ProtectedRoute allowedRoles={["user"]}>
+              <Confirmation />
+            </ProtectedRoute>
+          )}
+        />
+      </Router>
     </>
   );
 }

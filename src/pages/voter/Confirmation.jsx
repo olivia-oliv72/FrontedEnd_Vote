@@ -9,7 +9,7 @@ import Banner from "../../components/banner.jsx";
 function Confirmation() {
   const params = useParams();
   const categoryId = params.categoryId;
-
+  const candidateId = params.candidateId;
   const navigate = useNavigate();
 
   const [category, setCategory] = createSignal(null);
@@ -20,29 +20,33 @@ function Confirmation() {
   onMount(async () => {
     setIsLoading(true);
     setError(null);
-
-    
     try {
-      const response = await fetch('http://localhost:8080/api/categories'); 
+      const response = await fetch('http://localhost:8080/api/categories');
 
       if (!response.ok) {
         throw new Error(`Gagal mengambil data kategori. Status: ${response.status}`);
       }
 
       const serverCategories = await response.json();
-      
+
       const foundCategory = serverCategories.find(cat => cat.id === categoryId);
       setCategory(foundCategory);
 
       //Belum bisa tampilin pilih kandidat yang dipilih 
       if (foundCategory) {
-        if (foundCategory.candidates && foundCategory.candidates.length > 0) {
-          setVotedCandidate(foundCategory.candidates[0]); //Masih pakai candidates[0]
+        setCategory(foundCategory);
+        const foundCandidate = foundCategory.candidates.find(c => c.id === candidateId);
+
+        if (foundCandidate) {
+          setVotedCandidate(foundCandidate);
+        } else {
+          setError(`Kandidat dengan ID "${params.candidateId}" tidak ditemukan.`);
         }
       } else {
         setError(`Kategori dengan ID "${categoryId}" tidak ditemukan.`);
       }
     } catch (err) {
+      console.error("Error fetching category for confirmation:", err);
       setError(err.message || "Terjadi kesalahan saat mengambil data.");
     } finally {
       setIsLoading(false);
@@ -74,7 +78,6 @@ function Confirmation() {
           </div>
           <button onClick={backToHome}>Back To Homepage</button>
         </Show>
-        
       </div>
 
       <Footer />

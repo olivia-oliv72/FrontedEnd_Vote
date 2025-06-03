@@ -14,6 +14,7 @@ function Voting() {
   const [category, setCategory] = createSignal(null);
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
+  const [selectedCandidate, setSelectedCandidate] = createSignal(null);
 
   onMount(async () => {
     setIsLoading(true);
@@ -36,8 +37,13 @@ function Voting() {
     }
   });
 
+  function handleCandidateClick(candidate) {
+    setSelectedCandidate(candidate);
+    console.log("Selected candidate:", candidate);
+  };
+
   function handleVote() {
-    navigate(`/confirmation/${categoryId}`);
+    navigate(`/confirmation/${categoryId}/${selectedCandidate().id}`);
   }
 
   return (
@@ -47,13 +53,13 @@ function Voting() {
 
       <Show when={isLoading()}>
         <div class="voting-container">
-            <p>Memuat kategori...</p>
+          <p>Memuat kategori...</p>
         </div>
       </Show>
 
       <Show when={error()}>
-         <div class="voting-container">
-            <p style={{ color: 'red' }}>Error: {error()}</p>
+        <div class="voting-container">
+          <p style={{ color: 'red' }}>Error: {error()}</p>
         </div>
       </Show>
 
@@ -73,9 +79,9 @@ function Voting() {
               <div class="leftArrow"><img src={arrow} alt="Kiri" /></div>
               <div class="candidates">
                 <div class="candidates-row1">
-                  <For each={category()?.candidates?.slice(0, 4) || []}>
+                  <For each={category()?.candidates?.slice(0, 3) || []}>
                     {(candidate) => (
-                      <div class="candidate-group">
+                      <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
                         <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
                         <p>{candidate.name}</p>
                       </div>
@@ -83,11 +89,11 @@ function Voting() {
                   </For>
                 </div>
                 <div class="candidates-row2">
-                  <For each={category()?.candidates?.slice(4, 8) || []}>
+                  <For each={category()?.candidates?.slice(3, 5) || []}>
                     {(candidate) => (
-                      <div class="candidate-group">
-                        <p>{candidate.name}</p> 
+                      <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
                         <img src={`/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                        <p>{candidate.name}</p>
                       </div>
                     )}
                   </For>
@@ -95,9 +101,11 @@ function Voting() {
               </div>
               <div class="rightArrow"><img src={arrow} alt="Kanan" /></div>
             </div>
-            <div class="voteButton" onClick={handleVote}>
-              <button>Vote</button>
-            </div>
+            <Show when={selectedCandidate()}>
+              <div class="voteButton" onClick={handleVote}>
+                <button>Vote</button>
+              </div>
+            </Show>
           </div>
         </div>
       </Show>
