@@ -54,7 +54,7 @@ function App() {
           path="/"
           component={() => (
             <ProtectedRoute allowedRoles={["user"]}>
-              <Profile />
+              <Home />
             </ProtectedRoute>
           )}
         />
@@ -62,7 +62,7 @@ function App() {
           path="/history"
           component={() => (
             <ProtectedRoute allowedRoles={["user"]}>
-              <Home />
+              <Profile />
             </ProtectedRoute>
           )}
         />
