@@ -98,7 +98,7 @@ export default function AddCategory() {
   }
 
   const cancelSave = () => {
-    navigate("/admin/awardstable");
+    navigate("/admin");
   };
 
   return (
