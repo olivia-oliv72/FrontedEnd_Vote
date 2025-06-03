@@ -4,10 +4,17 @@ import express from 'express';
 import cors from 'cors';
 import { roleUsers, initialCategories, history as votingHistory } from './data.js';
 import crypto from 'crypto'
+import bcrypt from 'bcrypt'
+import { fileURLToPath } from 'url';
+
 
 const app = express();
 const PORT = 8080;
 const secret = 'frontedEnd_Vote'
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const dataPath = path.join(__dirname, 'data.js');
 
 app.use(cors());
 app.use(express.json());
@@ -38,7 +45,7 @@ function authMiddleware(req, res, next) {
   const user = verify(token);
 
   if (!user) {
-    return res.status(403).json({ message: 'Unauthorized - please log in first'})
+    return res.status(403).json({ message: 'Unauthorized - please log in first' })
   }
 
   req.user = user;
@@ -63,21 +70,82 @@ function sign(data) {
   return `${plain}.${sig}`;
 }
 
-app.post('/api/auth/login', (req, res) => {
+app.get('/api/users', (req, res) => {
+  const usersWithoutPasswords = roleUsers.map(user => {
+    const { password, ...userSafeData } = user;
+    return userSafeData;
+  });
+  res.json(usersWithoutPasswords);
+});
+
+const saltRounds = 10;
+const users = [...roleUsers]
+
+app.post('/api/auth/register', async (req, res) => {
+  const { username, email, password } = req.body;
+
+  if (!username || !email || !password) {
+    return res.status(400).json({ success: false, message: 'Semua informasi harus diisi' })
+  }
+
+  const existingEmail = users.find(u => u.email === email);
+  if (existingEmail) {
+    return res.status(400).json({ success: false, message: 'Email sudah dipakai pengguna lain' })
+  }
+  const existingUser = users.find(u => u.username === username);
+  if (existingUser) {
+    return res.status(400).json({ success: false, message: 'Email sudah dipakai pengguna lain' })
+  }
+  try {
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    const newUser = {
+      id: users.length + 1,
+      username,
+      email,
+      password: hashedPassword,
+      role: 'user'
+    };
+    users.push(newUser);
+
+    // simpan ke data.js
+    const newData = `
+export const roleUsers = ${JSON.stringify(users, null, 2)};
+export const initialCategories = ${JSON.stringify(initialCategories, null, 2)};
+export const history = ${JSON.stringify(votingHistory, null, 2)};
+  `;
+    fs.writeFileSync(dataPath, newData);
+
+    const { password: _, ...userData } = newUser;
+    res.status(201).json({ success: true, user: userData, message: 'Register berhasil' })
+  } catch (error) {
+    res.status(500).json({ success: false, message: 'Register gagal' })
+  }
+})
+
+app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
 
   if (!username || !password) {
     return res.status(400).json({ success: false, message: 'Username dan password harus diisi' });
   }
 
-  const user = roleUsers.find(u => u.username === username && u.password === password);
+  const user = roleUsers.find(u => u.username === username);
 
   if (user) {
-    const { password: _, ...userData } = user; 
+    const { password: _, ...userData } = user;
     const token = sign(userData);
     res.json({ success: true, message: 'Login berhasil', token });
   } else {
-    res.status(401).json({ success: false, message: 'Username atau password salah' });
+    if (!user) {
+      return res.status(401).json({ success: false, message: 'Username tidak ditemukan' });
+    }
+
+    // cocokkan password dengan hash
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(401).json({ success: false, message: 'Password salah' });
+    }
+
   }
 });
 
@@ -93,16 +161,16 @@ app.get('/api/history/:email', authMiddleware, (req, res) => {
 });
 
 app.post('/api/categories', (req, res) => {
-    const { id, name, candidates } = req.body; 
-    if (!id || !name) {
-        return res.status(400).json({ message: 'ID dan Nama kategori dibutuhkan' });
-    }
-    if (initialCategories.find(cat => cat.id === id)) {
-        return res.status(409).json({ message: 'Kategori dengan ID tersebut sudah ada' });
-    }
-    const newCategory = { id, name, candidates: candidates || [] };
-    initialCategories.push(newCategory);
-    res.status(201).json({ message: 'Kategori berhasil ditambahkan', category: newCategory });
+  const { id, name, candidates } = req.body;
+  if (!id || !name) {
+    return res.status(400).json({ message: 'ID dan Nama kategori dibutuhkan' });
+  }
+  if (initialCategories.find(cat => cat.id === id)) {
+    return res.status(409).json({ message: 'Kategori dengan ID tersebut sudah ada' });
+  }
+  const newCategory = { id, name, candidates: candidates || [] };
+  initialCategories.push(newCategory);
+  res.status(201).json({ message: 'Kategori berhasil ditambahkan', category: newCategory });
 });
 
 app.listen(PORT, () => {
@@ -120,16 +188,16 @@ app.put('/api/users/:id', (req, res) => {
   }
 
   user.username = username;
-  
+
   saveDataToFile();
 
   res.json({ message: "Username berhasil diubah", user });
 });
 
 function saveDataToFile() {
-    const dataFilePath = path.join(path.resolve(), 'data.js');
+  const dataFilePath = path.join(path.resolve(), 'data.js');
 
-    const fileContent =
+  const fileContent =
     `export const roleUsers = ${JSON.stringify(roleUsers, null, 2)};
 
     export const initialCategories = ${JSON.stringify(initialCategories, null, 2)};
@@ -137,5 +205,5 @@ function saveDataToFile() {
     export const history = ${JSON.stringify(votingHistory, null, 2)};
     `;
 
-    fs.writeFileSync(dataFilePath, fileContent, 'utf-8');
+  fs.writeFileSync(dataFilePath, fileContent, 'utf-8');
 }
