@@ -111,7 +111,7 @@ export default function AddCategory() {
         <form onSubmit={e => { e.preventDefault(); handleSaveForm(); }}>
           <div class="container-form">
             <div class="category-container">
-              <label for="categoryNameInput" class="name">Category Name: </label>
+              <label for="categoryNameInput" class="name">Category : </label>
               <input id="categoryNameInput"
                 type="text" class="input-category" placeholder="Category Name"
                 value={categoryName()}
@@ -120,12 +120,11 @@ export default function AddCategory() {
               />
             </div>
 
-            <h3>Candidates:</h3>
             <For each={candidates()}>
               {(candidate, index) => (
                 <div class="candidate-input-group">
                   <div class="candidate-name-input">
-                    <label for={`candidateName-${index()}`} class="name">Artist name #{index() + 1}:</label>
+                    <label for={`candidateName-${index()}`} class="name">Artist{index() + 1}:</label>
                     <input id={`candidateName-${index()}`}
                       class="input-category"
                       type="text"
@@ -134,16 +133,8 @@ export default function AddCategory() {
                       onInput={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
                     />
                   </div>
-                  <div class="candidate-photo-input">
-                     <label for={`candidatePhoto-${index()}`} class="name">Photo Filename:</label>
-                     <input id={`candidatePhoto-${index()}`}
-                      class="input-category"
-                      type="text" 
-                      placeholder="e.g., artist.png"
-                      value={candidate.photo}
-                      onInput={e => handleCandidateChange(index(), "photo", e.currentTarget.value)}
-                    />
-                  </div>
+                                        <button type="button" class="upload-photo">Upload photo</button>
+
                   <Show when={candidates().length > 1}>
                     <button 
                       type="button" 
@@ -160,7 +151,6 @@ export default function AddCategory() {
             <div class="buttons-form-actions">
               <button type="button" onClick={handleAddCandidate} class="add-candidate-btn">
                 <img src={addIcon} alt="Add Candidate" style={{width: "20px", height: "20px", "margin-right": "5px"}} />
-                Add Candidate Field
               </button>
               {message() && <p class="message-feedback">{message()}</p>}
               <div class="cancel-save-btn">
