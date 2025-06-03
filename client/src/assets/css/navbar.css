@@ -1,0 +1,72 @@
+/*css untuk navbar*/
+.navigation {
+    position: sticky;
+    top: 0;
+    /* THIS IS REQUIRED */
+    z-index: 10;
+    /* Higher value to stay on top */
+
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    background-color: rgb(174 168 178);
+    align-items: center;
+}
+
+#header {
+    margin: 0;
+}
+
+img {
+    width: 40px;
+    height: 35px;
+}
+
+.logout-admin {
+    height: 20px;
+}
+
+span {
+    font-size: 20px;
+}
+
+a {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.container-nav-user {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 400px;
+}
+
+.container-nav-user a {
+    font-size: 20px;
+    color: black;
+}
+
+.container-nav-user a:hover {
+    color: blue;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+    column-gap: 10px;
+}
+
+.logout-admin img {
+    height: 20px;
+    width: 25px;
+}
+
+.logout-admin {
+    margin-left: 1vh;
+}
