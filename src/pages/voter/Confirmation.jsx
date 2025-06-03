@@ -21,13 +21,18 @@ function Confirmation() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:8080/api/categories'); // Sesuaikan port
+      const response = await fetch('http://localhost:8080/api/categories');
+
       if (!response.ok) {
         throw new Error(`Gagal mengambil data kategori. Status: ${response.status}`);
       }
+
       const serverCategories = await response.json();
 
       const foundCategory = serverCategories.find(cat => cat.id === categoryId);
+      setCategory(foundCategory);
+
+      //Belum bisa tampilin pilih kandidat yang dipilih 
       if (foundCategory) {
         setCategory(foundCategory);
         const foundCandidate = foundCategory.candidates.find(c => c.id === candidateId);
@@ -73,7 +78,6 @@ function Confirmation() {
           </div>
           <button onClick={backToHome}>Back To Homepage</button>
         </Show>
-
       </div>
 
       <Footer />
