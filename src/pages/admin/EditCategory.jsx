@@ -155,7 +155,7 @@ export default function EditCategory() {
   }
 
   const cancelEdit = () => {
-    navigate("/admin/awardstable");
+    navigate("/admin");
   };
 
   return (
