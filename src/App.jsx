@@ -42,7 +42,7 @@ function App() {
           )}
         />
         <Route
-          path="/edit-category/:categoryId"
+          path="/admin/edit-category/:categoryId"
           component={() => (
             <ProtectedRoute allowedRoles={["admin"]}>
               <EditCategory />
