@@ -1,7 +1,7 @@
 import NavbarGuest from "../../components/Navbar.jsx"
 import arrow from "../../assets/img/arrow.png";
 import "../../assets/css/voter/Voting.css";
-import { For, createSignal, onMount, Show } from "solid-js";
+import { For, createSignal, onMount, Show, createEffect } from "solid-js";
 import { useParams, useNavigate } from "@solidjs/router";
 import Banner from "../../components/banner.jsx";
 import Footer from "../../components/footer.jsx";
@@ -17,6 +17,9 @@ function Voting() {
   const [selectedCandidate, setSelectedCandidate] = createSignal(null);
   const [currentPage, setCurrentPage] = createSignal(0);
   const [showOverlay, setShowOverlay] = createSignal(false);
+  const [allCandidates, setAllCandidates] = createSignal([]);
+  const [displayCandidates, setDisplayCandidates] = createSignal([]);
+  const [searchQuery, setSearchQuery] = createSignal("");
 
   onMount(async () => {
     setIsLoading(true);
@@ -31,11 +34,26 @@ function Voting() {
 
       const foundCategory = serverCategories.find(cat => cat.id === categoryId);
       setCategory(foundCategory);
+      if (foundCategory && foundCategory.candidates) {
+        setAllCandidates(foundCategory.candidates);
+        setDisplayCandidates(foundCategory.candidates)
+      }
 
     } catch (err) {
       setError(err.message || "Terjadi kesalahan saat mengambil data.");
     } finally {
       setIsLoading(false);
+    }
+  });
+
+  createEffect(() => {
+    const query = searchQuery().toLowerCase();
+    if(allCandidates()) {
+      const filtered = allCandidates().filter(candidate =>
+        candidate.name.toLowerCase().includes(query)
+      );
+      setDisplayCandidates(filtered);
+      setCurrentPage(0);
     }
   });
 
@@ -53,7 +71,12 @@ function Voting() {
   }
 
   function handlePagination() {
-    setCurrentPage((prev) => (prev === 0 ? 1 : 0));
+    const totalPages = Math.ceil(displayCandidates().length / 5);
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  }
+
+  function handleSearchChange(event) {
+    setSearchQuery(event.target.value);
   }
 
 
@@ -81,19 +104,25 @@ function Voting() {
               <p>{category()?.name}</p>
             </div>
             <div class="searchBar">
-              <input type="text" placeholder="Search Artist..." class="search-input" />
+              <input 
+                type="text" 
+                placeholder="Search Artist..." 
+                class="search-input" 
+                value={searchQuery()}
+                onInput={handleSearchChange}
+              />
             </div>
           </div>
 
           <div class="candidates-button-container">
             <div class="candidates-list">
-              <div class="leftArrow" onClick={handlePagination}><img src={arrow} alt="Kiri" /></div>
+              <Show when={displayCandidates().length > 5}>
+                <div class="leftArrow" onClick={handlePagination}><img src={arrow} alt="Kiri" /></div>
+              </Show>
               <div class="candidates">
                 <div class="candidates-row1">
                   <For each={
-                    currentPage() === 0
-                      ? category()?.candidates?.slice(0, 3)
-                      : category()?.candidates?.slice(5, 8) || []
+                    displayCandidates().slice(currentPage() * 5, currentPage() * 5 + 3)
                   }>
                     {(candidate) => (
                       <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
@@ -110,9 +139,7 @@ function Voting() {
 
                 <div class="candidates-row2">
                   <For each={
-                    currentPage() === 0
-                      ? category()?.candidates?.slice(3, 5)
-                      : category()?.candidates?.slice(8, 10) || []
+                    displayCandidates().slice(currentPage() * 5 + 3, currentPage() * 5 + 5)
                   }>
                     {(candidate) => (
                       <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
@@ -127,7 +154,9 @@ function Voting() {
                   </For>
                 </div>
               </div>
-              <div class="rightArrow" onClick={handlePagination}><img src={arrow} alt="Kanan" /></div>
+              <Show when={displayCandidates().length > 5}>
+                <div class="rightArrow" onClick={handlePagination}><img src={arrow} alt="Kanan" /></div>
+              </Show>
             </div>
             <Show when={selectedCandidate()}>
               <p class="selected-name">Your Choice: <strong>{selectedCandidate().name}</strong></p>

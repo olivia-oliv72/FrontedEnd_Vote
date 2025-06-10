@@ -19,6 +19,13 @@ export const roleUsers = [
     "email": "a@gmail.com",
     "password": "$2b$10$lbsqvpO9fRW4gGJxn3Ak5eJSbUBV7aCcwBNg6z13xFKDS4VmMI6M2",
     "role": "user"
+  },
+  {
+    "id": 4,
+    "username": "rangga",
+    "email": "rangga@gmail.com",
+    "password": "$2b$10$tNaO8uhTXv7JTrYgIQni8u.fhp11g.YFPL0mD24DyEgv.KeFHw7ZW",
+    "role": "user"
   }
 ];
 export const initialCategories = [
@@ -213,3 +220,4 @@ export const history = [
     ]
   }
 ];
+  
