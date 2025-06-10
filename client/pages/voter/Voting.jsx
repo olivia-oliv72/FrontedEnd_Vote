@@ -15,6 +15,8 @@ function Voting() {
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
   const [selectedCandidate, setSelectedCandidate] = createSignal(null);
+  const [currentPage, setCurrentPage] = createSignal(0);
+  const [showOverlay, setShowOverlay] = createSignal(false);
 
   onMount(async () => {
     setIsLoading(true);
@@ -42,9 +44,18 @@ function Voting() {
     console.log("Selected candidate:", candidate);
   };
 
-  function handleVote() {
+  function handleVoteClick() {
+    setShowOverlay(true);
+  }
+
+  function confirmVote() {
     navigate(`/confirmation/${categoryId}/${selectedCandidate().id}`);
   }
+
+  function handlePagination() {
+    setCurrentPage((prev) => (prev === 0 ? 1 : 0));
+  }
+
 
   return (
     <div class="page-voting-container">
@@ -76,39 +87,70 @@ function Voting() {
 
           <div class="candidates-button-container">
             <div class="candidates-list">
-              <div class="leftArrow"><img src={arrow} alt="Kiri" /></div>
+              <div class="leftArrow" onClick={handlePagination}><img src={arrow} alt="Kiri" /></div>
               <div class="candidates">
                 <div class="candidates-row1">
-                  <For each={category()?.candidates?.slice(0, 3) || []}>
+                  <For each={
+                    currentPage() === 0
+                      ? category()?.candidates?.slice(0, 3)
+                      : category()?.candidates?.slice(5, 8) || []
+                  }>
                     {(candidate) => (
                       <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
-                        <img src={`/server/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                        <img
+                          src={`/server/photo-candidates/${candidate.photo}`}
+                          alt={candidate.name}
+                          class={selectedCandidate()?.id === candidate.id ? "candidate-img selected" : "candidate-img"}
+                        />
                         <p>{candidate.name}</p>
                       </div>
                     )}
                   </For>
                 </div>
+
                 <div class="candidates-row2">
-                  <For each={category()?.candidates?.slice(3, 5) || []}>
+                  <For each={
+                    currentPage() === 0
+                      ? category()?.candidates?.slice(3, 5)
+                      : category()?.candidates?.slice(8, 10) || []
+                  }>
                     {(candidate) => (
                       <div class="candidate-group" onClick={() => handleCandidateClick(candidate)}>
-                        <img src={`/server/photo-candidates/${candidate.photo}`} alt={candidate.name} />
+                        <img
+                          src={`/server/photo-candidates/${candidate.photo}`}
+                          alt={candidate.name}
+                          class={selectedCandidate()?.id === candidate.id ? "candidate-img selected" : "candidate-img"}
+                        />
                         <p>{candidate.name}</p>
                       </div>
                     )}
                   </For>
                 </div>
               </div>
-              <div class="rightArrow"><img src={arrow} alt="Kanan" /></div>
+              <div class="rightArrow" onClick={handlePagination}><img src={arrow} alt="Kanan" /></div>
             </div>
             <Show when={selectedCandidate()}>
-              <div class="voteButton" onClick={handleVote}>
+              <p class="selected-name">Your Choice: <strong>{selectedCandidate().name}</strong></p>
+              <div class="voteButton" onClick={handleVoteClick}>
                 <button>Vote</button>
               </div>
             </Show>
           </div>
         </div>
       </Show>
+
+      <Show when={showOverlay()}>
+        <div class="overlay">
+          <div class="overlay-content">
+            <p>Are you sure you want to vote for <strong>{selectedCandidate().name}</strong>?</p>
+            <div class="overlay-buttons">
+              <button onClick={confirmVote}>OK</button>
+              <button onClick={() => setShowOverlay(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      </Show>
+
 
       <Footer />
     </div>
