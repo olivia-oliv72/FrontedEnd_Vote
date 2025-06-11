@@ -40,14 +40,12 @@ export default function EditCategory() {
         throw new Error(`Gagal mengambil data. Status: ${response.status}. Pesan: ${errorText || response.statusText}`);
       }
       const allCategories = await response.json();
-      // console.log("EditCategory.jsx - Semua kategori dari server:", allCategories);
 
       if (!Array.isArray(allCategories)) {
         throw new Error("Format data semua kategori dari server tidak sesuai (bukan array).");
       }
 
       const categoryToEdit = allCategories.find(c => c.id === categoryIdToEdit);
-      // console.log(`EditCategory.jsx - Kategori ditemukan untuk ID "${categoryIdToEdit}":`, categoryToEdit);
 
       if (categoryToEdit) {
         setOriginalCategoryName(categoryToEdit.name);
@@ -82,12 +80,26 @@ export default function EditCategory() {
     setCandidates([...candidates(), { name: "", photo: "" }]);
   };
 
-  const handleRemoveCandidate = (indexToRemove) => {
-    if (candidates().length > 1) {
-      setCandidates(candidates().filter((_, index) => index !== indexToRemove));
-    } else {
-      handleCandidateChange(indexToRemove, "name", "");
-      handleCandidateChange(indexToRemove, "photo", "");
+  const handleRemoveCandidate = async (indexToRemove) => {
+    const candidateToRemove = candidates()[indexToRemove];
+
+    //confirm hapus --> cancel --> stop
+    if (!confirm(`Do you sure to delete this candidate: "${candidateToRemove.name}"?`)) {
+        return;
+    }
+
+    try {
+        const response = await fetch(`http://localhost:8080/api/categories/${categoryIdToEdit}/candidates/${candidateToRemove.id}`, {
+            method: 'DELETE'
+        });
+
+        const result = await response.json();
+
+        setCandidates(candidates().filter(c => c.id !== candidateToRemove.id));
+        setMessage(result.message || 'Delete success');
+        setTimeout(() => setMessage(""), 2000);
+    } catch (err) {
+        console.error("Error saat menghapus kandidat:", err);
     }
   };
 
@@ -183,7 +195,8 @@ export default function EditCategory() {
                         value={candidate.name}
                         onInput={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
                       />
-                      <img src={remove} class="delete-btn" />
+                      <img src={remove} class="delete-btn" onClick={() => handleRemoveCandidate(index())} alt="Remove" />
+
                     </div>
                     <div class="foto">
                       <p>{candidate.photo}</p>

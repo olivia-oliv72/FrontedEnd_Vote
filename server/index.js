@@ -194,6 +194,32 @@ app.put('/api/users/:id', (req, res) => {
   res.json({ message: "Username berhasil diubah", user });
 });
 
+app.delete('/api/categories/:categoryId/candidates/:candidateId', (req, res) => {
+  const { categoryId, candidateId } = req.params;
+
+  const categoryIndex = categoriesData.findIndex(cat => cat.id === categoryId);
+  if (categoryIndex === -1) {
+    return res.status(404).json({ message: 'Category not found' });
+  }
+
+  const candidates = categoriesData[categoryIndex].candidates;
+  const candidateIndex = candidates.findIndex(cand => cand.id === candidateId);
+
+  if (candidateIndex === -1) {
+    return res.status(404).json({ message: 'Candidate not found in this category' });
+  }
+
+  //Hapus kandidat dari array
+  const deletedCandidate = candidates.splice(candidateIndex, 1);
+  saveDataToFile();
+
+  res.json({ 
+    success: true, 
+    message: `Candidate: "${deletedCandidate[0].name}" `, 
+    deletedCandidateId: candidateId 
+  });
+});
+
 function saveDataToFile() {
   const dataFilePath = path.join(path.resolve(), 'data.js');
 
