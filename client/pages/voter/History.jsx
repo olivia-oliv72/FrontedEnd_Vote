@@ -9,29 +9,18 @@ export default function History() {
   const [error, setError] = createSignal(null);
   const [currentUser, setCurrentUser] = createSignal(null);
 
-  onMount(async () => {
+  onMount(() => {
     const user = getUser();
-
     setCurrentUser(user);
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const token = localStorage.getItem('auth_token');
-      const response = await fetch(`http://localhost:8080/api/history/${user.email}`, {
-        headers: {
-          Authorization: token,
-        }
-      });
-
-      if (!response.ok) {
-        setUserVotes([]);
-      } else {
-        const dataFromServer = await response.json();
-        setUserVotes(dataFromServer.history.vote);
-      }
+      const history = JSON.parse(localStorage.getItem(`history_${user.email}`)) || [];
+      setUserVotes(history);
     } catch (err) {
-      setError(err.message || "Terjadi kesalahan saat mengambil history vote.");
+      setError("Gagal memuat riwayat voting.");
     } finally {
       setIsLoading(false);
     }

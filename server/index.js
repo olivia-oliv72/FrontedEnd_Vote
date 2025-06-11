@@ -2,7 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import cors from 'cors';
-import { roleUsers, initialCategories, history as votingHistory } from './data.js';
+// import { roleUsers, initialCategories, history as votingHistory } from './data.js';
+import { roleUsers, initialCategories } from './data.js';
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import { fileURLToPath } from 'url';
