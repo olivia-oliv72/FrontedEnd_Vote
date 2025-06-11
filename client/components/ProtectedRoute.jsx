@@ -8,13 +8,14 @@ export default function ProtectedRoute(props) {
 
   createEffect(() => {
     const token = localStorage.getItem("auth_token");
+    const allowedRoles = props.allowedRoles || [];
+    const disallowedRoles = props.disallowedRoles || [];
     if (!token) {
       navigate("/login", { replace: true });
       return;
     }
 
     const user = decode(token);
-    const allowedRoles = props.allowedRoles || [];
 
     if (user && allowedRoles.includes(user.role)) {
       setIsAuthorized(true);
