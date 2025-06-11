@@ -1,4 +1,3 @@
-
 export const roleUsers = [
   {
     "id": 1,
@@ -22,13 +21,14 @@ export const roleUsers = [
   },
   {
     "id": 4,
-    "username": "rangga",
+    "username": "rangga1",
     "email": "rangga@gmail.com",
     "password": "$2b$10$tNaO8uhTXv7JTrYgIQni8u.fhp11g.YFPL0mD24DyEgv.KeFHw7ZW",
     "role": "user"
   }
 ];
-export const initialCategories = [
+
+    export const initialCategories = [
   {
     "id": "female",
     "name": "Best Female Artist",
@@ -198,7 +198,8 @@ export const initialCategories = [
     ]
   }
 ];
-export const history = [
+
+    export const history = [
   {
     "email": "user@gmail.com",
     "vote": [
@@ -220,4 +221,4 @@ export const history = [
     ]
   }
 ];
-  
+    
