@@ -5,6 +5,7 @@ import { For, createSignal, onMount, Show, createEffect } from "solid-js";
 import { useParams, useNavigate } from "@solidjs/router";
 import Banner from "../../components/banner.jsx";
 import Footer from "../../components/footer.jsx";
+import { getUser } from "../../utils/authentication.js";
 
 function Voting() {
   const params = useParams();
@@ -48,7 +49,7 @@ function Voting() {
 
   createEffect(() => {
     const query = searchQuery().toLowerCase();
-    if(allCandidates()) {
+    if (allCandidates()) {
       const filtered = allCandidates().filter(candidate =>
         candidate.name.toLowerCase().includes(query)
       );
@@ -67,8 +68,44 @@ function Voting() {
   }
 
   function confirmVote() {
+    const user = getUser();
+    if (!user) {
+      alert("Silakan login terlebih dahulu.");
+      return;
+    }
+
+    const storageKey = `history_${user.email}`;
+    const previousVotes = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    // ❗ Cek apakah user sudah vote untuk kategori ini
+    const alreadyVoted = previousVotes.some(vote => vote.category === category().name);
+    if (alreadyVoted) {
+      alert(`Kamu sudah melakukan voting untuk kategori "${category().name}".`);
+      setShowOverlay(false); // sembunyikan overlay
+      return;
+    }
+
+    const voteData = {
+      category: category().name,
+      candidateId: selectedCandidate().id,
+      name: selectedCandidate().name,
+      photo: selectedCandidate().photo,
+    };
+
+    const updatedVotes = [...previousVotes, voteData];
+    localStorage.setItem(storageKey, JSON.stringify(updatedVotes));
+
     navigate(`/confirmation/${categoryId}/${selectedCandidate().id}`);
   }
+
+
+  function hasAlreadyVoted() {
+    const user = getUser();
+    const storageKey = `history_${user?.email}`;
+    const previousVotes = JSON.parse(localStorage.getItem(storageKey)) || [];
+    return previousVotes.some(v => v.category === category().name);
+  }
+
 
   function handlePagination() {
     const totalPages = Math.ceil(displayCandidates().length / 5);
@@ -104,10 +141,10 @@ function Voting() {
               <p>{category()?.name}</p>
             </div>
             <div class="searchBar">
-              <input 
-                type="text" 
-                placeholder="Search Artist..." 
-                class="search-input" 
+              <input
+                type="text"
+                placeholder="Search Artist..."
+                class="search-input"
                 value={searchQuery()}
                 onInput={handleSearchChange}
               />
@@ -158,11 +195,17 @@ function Voting() {
                 <div class="rightArrow" onClick={handlePagination}><img src={arrow} alt="Kanan" /></div>
               </Show>
             </div>
-            <Show when={selectedCandidate()}>
-              <p class="selected-name">Your Choice: <strong>{selectedCandidate().name}</strong></p>
+            <Show when={selectedCandidate() && !hasAlreadyVoted()}>
+              <p class="selected-name">Your Pick: <strong>{selectedCandidate().name}</strong></p>
               <div class="voteButton" onClick={handleVoteClick}>
                 <button>Vote</button>
               </div>
+
+
+            </Show>
+
+            <Show when={hasAlreadyVoted()}>
+              <p class="already-voted">You have already voted for this category</p>
             </Show>
           </div>
         </div>

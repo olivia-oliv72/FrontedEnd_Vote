@@ -1,4 +1,3 @@
-
 export const roleUsers = [
   {
     "id": 1,
@@ -28,6 +27,7 @@ export const roleUsers = [
     "role": "user"
   }
 ];
+
 export const initialCategories = [
   {
     "id": "female",
@@ -82,6 +82,12 @@ export const initialCategories = [
         "id": "f10",
         "name": "Tyla",
         "photo": "tyla.jpg"
+      },
+
+      {
+        "id": "f11",
+        "name": "Olivia Rodrigo",
+        "photo": "olivia.jpg"
       }
     ]
   },
@@ -198,26 +204,28 @@ export const initialCategories = [
     ]
   }
 ];
-export const history = [
-  {
-    "email": "user@gmail.com",
-    "vote": [
-      {
-        "category": "Best Female",
-        "name": "IU",
-        "photo": "iu.jpg"
-      },
-      {
-        "category": "Best Male",
-        "name": "TXT",
-        "photo": "iu.png"
-      },
-      {
-        "category": "Best Collaboration",
-        "name": "Zico",
-        "photo": "iu.png"
-      }
-    ]
-  }
-];
-  
+
+
+// export const history = [
+//   {
+//     "email": "user@gmail.com",
+//     "vote": [
+//       {
+//         "category": "Best Female",
+//         "name": "IU",
+//         "photo": "iu.jpg"
+//       },
+//       {
+//         "category": "Best Male",
+//         "name": "TXT",
+//         "photo": "iu.png"
+//       },
+//       {
+//         "category": "Best Collaboration",
+//         "name": "Zico",
+//         "photo": "iu.png"
+//       }
+//     ]
+//   }
+// ];
+

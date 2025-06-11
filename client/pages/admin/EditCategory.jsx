@@ -41,10 +41,6 @@ export default function EditCategory() {
       }
       const allCategories = await response.json();
 
-      if (!Array.isArray(allCategories)) {
-        throw new Error("Format data semua kategori dari server tidak sesuai (bukan array).");
-      }
-
       const categoryToEdit = allCategories.find(c => c.id === categoryIdToEdit);
 
       if (categoryToEdit) {
@@ -119,7 +115,7 @@ export default function EditCategory() {
     const updatedCategoryData = {
       name: categoryName(),
       candidates: validCandidates.map(c => ({
-        id: c.id || (c.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substr(2, 9)),
+        id: c.id || (c.name.toLowerCase().replace(/\s+/g, '-')),
         name: c.name,
         photo: c.photo || 'placeholder.png',
       })),
@@ -140,9 +136,9 @@ export default function EditCategory() {
       }
 
       if (response.ok) {
-        setMessage(result.message || "Kategori berhasil diperbarui! Mengarahkan...");
+        setMessage(result.message || "Category saved!");
         setOriginalCategoryName(categoryName());
-        setTimeout(() => { navigate("/admin/awardstable"); }, 1500);
+        setTimeout(() => { navigate("/admin"); }, 1500);
       } else {
         setMessage(result.message || `Gagal memperbarui kategori. Status: ${response.status}`);
       }
