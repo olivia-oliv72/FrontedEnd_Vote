@@ -13,6 +13,7 @@ import AddCategory from "./pages/admin/AddCategory";
 import EditCategory from "./pages/admin/EditCategory";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFoundRedirect from "./components/NotFoundRedirect";
 
 function App() {
   console.log("App is running")
@@ -83,6 +84,10 @@ function App() {
               <Confirmation />
             </ProtectedRoute>
           )}
+        />
+        <Route
+          path="*"
+          component={NotFoundRedirect}
         />
       </Router>
     </>
