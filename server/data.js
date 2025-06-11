@@ -203,6 +203,7 @@ export const initialCategories = [
     ]
   }
 ];
+
 // export const history = [
 //   {
 //     "email": "user@gmail.com",
@@ -225,3 +226,4 @@ export const initialCategories = [
 //     ]
 //   }
 // ];
+

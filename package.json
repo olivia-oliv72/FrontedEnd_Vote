@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@solidjs/router": "^0.15.3",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "SI-VOTE": "file:",
