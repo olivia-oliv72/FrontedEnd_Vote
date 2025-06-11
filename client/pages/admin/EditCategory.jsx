@@ -79,9 +79,22 @@ export default function EditCategory() {
   const handleRemoveCandidate = async (indexToRemove) => {
     const candidateToRemove = candidates()[indexToRemove];
 
-    //confirm hapus --> cancel --> stop
-    if (!confirm(`Do you sure to delete this candidate: "${candidateToRemove.name}"?`)) {
-        return;
+    // Jika kandidat tidak punya ID, ini adalah field baru yang belum disimpan.
+    // Cukup hapus dari UI saja tanpa memanggil API.
+    if (!candidateToRemove.id) {
+        if (candidates().length > 1) {
+            setCandidates(candidates().filter((_, index) => index !== indexToRemove));
+        } else {
+            // Jika hanya satu, kosongkan fieldnya
+            handleCandidateChange(indexToRemove, "name", "");
+            handleCandidateChange(indexToRemove, "photo", "");
+        }
+        return; // Hentikan fungsi di sini
+    }
+
+    // Jika kandidat punya ID, konfirmasi sebelum hapus dari server.
+    if (!confirm(`Apakah Anda yakin ingin menghapus kandidat: "${candidateToRemove.name}"?`)) {
+        return; // Hentikan jika pengguna klik "Cancel"
     }
 
     try {
@@ -91,11 +104,25 @@ export default function EditCategory() {
 
         const result = await response.json();
 
-        setCandidates(candidates().filter(c => c.id !== candidateToRemove.id));
-        setMessage(result.message || 'Delete success');
-        setTimeout(() => setMessage(""), 2000);
+        // PERBAIKAN PENTING: Cek apakah respons dari server OK (status 200-299)
+        if (response.ok && result.success) {
+            // HANYA JIKA BERHASIL DI SERVER, baru update UI
+            setCandidates(candidates().filter(c => c.id !== candidateToRemove.id));
+            setMessage(result.message || 'Kandidat berhasil dihapus.');
+        } else {
+            // Jika gagal, tampilkan pesan error dari server
+            setError(result.message || 'Gagal menghapus kandidat dari server.');
+        }
+        
+        // Hilangkan pesan setelah beberapa detik
+        setTimeout(() => {
+            setMessage("");
+            setError(null);
+        }, 3000);
+
     } catch (err) {
         console.error("Error saat menghapus kandidat:", err);
+        setError("Tidak dapat terhubung ke server untuk menghapus kandidat.");
     }
   };
 
