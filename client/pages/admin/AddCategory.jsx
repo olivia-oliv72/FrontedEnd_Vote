@@ -53,18 +53,18 @@ export default function AddCategory() {
 
     const validCandidates = candidates().filter(c => c.name.trim() !== "");
     if (validCandidates.length === 0) {
-      setMessage("Minimal harus ada satu kandidat dengan nama yang valid.");
+      setMessage("Minimal harus ada satu kandidat");
       setIsLoading(false);
       return;
     }
 
-    const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
+    const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-');
 
     const newCategoryData = {
       id: categoryId,
       name: categoryName(),
       candidates: validCandidates.map(c => ({
-        id: c.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substr(2, 5),
+        id: c.name.toLowerCase().replace(/\s+/g, '-'),
         name: c.name,
         photo: c.photo || 'placeholder.png'
       })),
@@ -82,9 +82,9 @@ export default function AddCategory() {
       const result = await response.json();
 
       if (response.ok) {
-        setMessage("Kategori berhasil ditambahkan! Mengarahkan ke admin...");
+        setMessage("Category saved!");
         setTimeout(() => {
-          navigate("/admin/awardstable");
+          navigate("/admin");
         }, 1500);
       } else {
         setMessage(result.message || "Gagal menyimpan kategori. Coba lagi.");

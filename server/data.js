@@ -28,16 +28,11 @@ export const roleUsers = [
   }
 ];
 
-    export const initialCategories = [
+export const initialCategories = [
   {
     "id": "female",
     "name": "Best Female Artist",
     "candidates": [
-      {
-        "id": "f1",
-        "name": "IU",
-        "photo": "iu.jpg"
-      },
       {
         "id": "f2",
         "name": "Taeyeon",
@@ -82,6 +77,11 @@ export const roleUsers = [
         "id": "f10",
         "name": "Tyla",
         "photo": "tyla.jpg"
+      },
+      {
+        "id": "f11",
+        "name": "Olivia Rodri",
+        "photo": "olivia.jpg"
       }
     ]
   },
@@ -199,7 +199,7 @@ export const roleUsers = [
   }
 ];
 
-    export const history = [
+export const history = [
   {
     "email": "user@gmail.com",
     "vote": [
@@ -221,4 +221,3 @@ export const roleUsers = [
     ]
   }
 ];
-    
