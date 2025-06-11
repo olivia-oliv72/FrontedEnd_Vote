@@ -1,4 +1,3 @@
-
 export const roleUsers = [
   {
     "id": 1,
@@ -28,6 +27,7 @@ export const roleUsers = [
     "role": "user"
   }
 ];
+
 export const initialCategories = [
   {
     "id": "female",
@@ -82,7 +82,8 @@ export const initialCategories = [
         "id": "f10",
         "name": "Tyla",
         "photo": "tyla.jpg"
-      }
+      },
+
     ]
   },
   {
@@ -198,6 +199,7 @@ export const initialCategories = [
     ]
   }
 ];
+
 export const history = [
   {
     "email": "user@gmail.com",
@@ -220,4 +222,3 @@ export const history = [
     ]
   }
 ];
-  

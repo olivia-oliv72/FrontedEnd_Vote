@@ -6,7 +6,19 @@ import { roleUsers, initialCategories, history as votingHistory } from './data.j
 import crypto from 'crypto'
 import bcrypt from 'bcrypt'
 import { fileURLToPath } from 'url';
+import multer from 'multer';
 
+// Configure multer storage for photo uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join(__dirname, 'photo-candidates'));
+  },
+  filename: function (req, file, cb) {
+    // Use original filename or generate unique name if needed
+    cb(null, Date.now() + '-' + file.originalname);
+  }
+});
+const upload = multer({ storage: storage });
 
 const app = express();
 const PORT = 8080;
@@ -17,6 +29,7 @@ const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, 'data.js');
 
 app.use(cors());
+// Use express.json only for non-multipart requests
 app.use(express.json());
 
 function verify(token) {
@@ -177,6 +190,11 @@ app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
 });
 
+
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
+});
+
 app.put('/api/users/:id', (req, res) => {
   const userId = parseInt(req.params.id);
   const { username } = req.body;
@@ -192,6 +210,36 @@ app.put('/api/users/:id', (req, res) => {
   saveDataToFile();
 
   res.json({ message: "Username berhasil diubah", user });
+});
+
+app.put('/api/categories/:id', (req, res) => {
+  const categoryId = req.params.id;
+
+  // ambil name and candidates from request body
+  const { name, candidates } = req.body;
+
+  // cari category by id
+  const category = initialCategories.find(cat => cat.id === categoryId);
+
+  // If category not found, return 404 error
+  if (!category) {
+    return res.status(404).json({ message: 'Kategori tidak ditemukan' });
+  }
+
+  // Validasi nama
+  if (!name) {
+    return res.status(400).json({ message: 'Nama kategori dibutuhkan' });
+  }
+
+  // Update category name and candidates
+  category.name = name;
+  category.candidates = candidates || [];
+
+  // Persist updated categories to data.js file
+  saveDataToFile();
+
+  // Respond with success message and updated category
+  res.json({ message: 'Kategori berhasil diperbarui', category });
 });
 
 function saveDataToFile() {
