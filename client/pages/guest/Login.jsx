@@ -59,7 +59,6 @@ function Login() {
         } else if (user.role === "user") {
           navigate("/");
         } else {
-
           navigate("/");
         }
       } else {

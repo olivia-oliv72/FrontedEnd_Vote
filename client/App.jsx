@@ -13,6 +13,7 @@ import AddCategory from "./pages/admin/AddCategory";
 import EditCategory from "./pages/admin/EditCategory";
 
 import ProtectedRoute from "./components/ProtectedRoute";
+import NotFoundRedirect from "./components/NotFoundRedirect";
 
 function App() {
   console.log("App is running")
@@ -22,6 +23,16 @@ function App() {
         {/* Public */}
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
+
+        {/* Public, User */}
+        <Route
+          path="/"
+          component={() => (
+            <ProtectedRoute disallowedRoles={["admin"]}>
+              <Home />
+            </ProtectedRoute>
+          )}
+        />
 
         {/* Admin */}
         <Route
@@ -51,14 +62,6 @@ function App() {
 
         {/* User */}
         <Route
-          path="/"
-          component={() => (
-            <ProtectedRoute allowedRoles={["user"]}>
-              <Home />
-            </ProtectedRoute>
-          )}
-        />
-        <Route
           path="/history"
           component={() => (
             <ProtectedRoute allowedRoles={["user"]}>
@@ -81,6 +84,10 @@ function App() {
               <Confirmation />
             </ProtectedRoute>
           )}
+        />
+        <Route
+          path="*"
+          component={NotFoundRedirect}
         />
       </Router>
     </>

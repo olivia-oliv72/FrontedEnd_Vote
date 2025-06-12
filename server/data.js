@@ -21,7 +21,7 @@ export const roleUsers = [
   },
   {
     "id": 4,
-    "username": "rangga",
+    "username": "rangga1",
     "email": "rangga@gmail.com",
     "password": "$2b$10$tNaO8uhTXv7JTrYgIQni8u.fhp11g.YFPL0mD24DyEgv.KeFHw7ZW",
     "role": "user"
@@ -33,11 +33,6 @@ export const initialCategories = [
     "id": "female",
     "name": "Best Female Artist",
     "candidates": [
-      {
-        "id": "f1",
-        "name": "IU",
-        "photo": "iu.jpg"
-      },
       {
         "id": "f2",
         "name": "Taeyeon",
@@ -83,10 +78,9 @@ export const initialCategories = [
         "name": "Tyla",
         "photo": "tyla.jpg"
       },
-
       {
         "id": "f11",
-        "name": "Olivia Rodrigo",
+        "name": "Olivia Rodri",
         "photo": "olivia.jpg"
       }
     ]
@@ -205,27 +199,25 @@ export const initialCategories = [
   }
 ];
 
-
-// export const history = [
-//   {
-//     "email": "user@gmail.com",
-//     "vote": [
-//       {
-//         "category": "Best Female",
-//         "name": "IU",
-//         "photo": "iu.jpg"
-//       },
-//       {
-//         "category": "Best Male",
-//         "name": "TXT",
-//         "photo": "iu.png"
-//       },
-//       {
-//         "category": "Best Collaboration",
-//         "name": "Zico",
-//         "photo": "iu.png"
-//       }
-//     ]
-//   }
-// ];
-
+export const history = [
+  {
+    "email": "user@gmail.com",
+    "vote": [
+      {
+        "category": "Best Female",
+        "name": "IU",
+        "photo": "iu.jpg"
+      },
+      {
+        "category": "Best Male",
+        "name": "TXT",
+        "photo": "iu.png"
+      },
+      {
+        "category": "Best Collaboration",
+        "name": "Zico",
+        "photo": "iu.png"
+      }
+    ]
+  }
+];

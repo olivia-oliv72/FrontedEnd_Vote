@@ -8,16 +8,37 @@ export default function ProtectedRoute(props) {
 
   createEffect(() => {
     const token = localStorage.getItem("auth_token");
+    const allowedRoles = props.allowedRoles || [];
+    const disallowedRoles = props.disallowedRoles || [];
+    
     if (!token) {
-      navigate("/login", { replace: true });
+      if(allowedRoles.length === 0){
+        setIsAuthorized(true)
+      } else {
+        navigate("/login", { replace: true });
+      }
       return;
     }
 
     const user = decode(token);
-    const allowedRoles = props.allowedRoles || [];
 
-    if (user && allowedRoles.includes(user.role)) {
-      setIsAuthorized(true);
+    if (user) {
+      if(disallowedRoles.includes(user.role)) {
+        if(user.role === "admin") {
+          navigate("/admin", {replace: true })
+        } else {
+          localStorage.removeItem("auth_token");
+          navigate("/login", { replace: true });
+        }
+        return;
+      }
+
+      if(allowedRoles.length === 0 || allowedRoles.includes(user.role)) {
+        setIsAuthorized(true);
+      } else {
+        localStorage.removeItem("auth_token");
+        navigate("/login", { replace: true });
+      }
     } else {
       localStorage.removeItem("auth_token");
       navigate("/login", { replace: true });
