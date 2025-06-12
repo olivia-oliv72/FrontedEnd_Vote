@@ -81,7 +81,7 @@ export const initialCategories = [
       },
       {
         "id": "f11",
-        "name": "Olivia Rodrigo",
+        "name": "Olivia Rodri",
         "photo": "olivia.jpg"
       }
     ]

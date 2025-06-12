@@ -209,22 +209,6 @@ app.post('/api/categories', upload.array('photos'), (req, res) => {
 });
 
 
-// app.put('/api/categories/:id', (req, res) => {
-//   const categoryId = req.params.id;
-//   const { name, candidates } = req.body;
-//   const categoryIndex = categoriesData.findIndex(cat => cat.id === categoryId);
-//   if (categoryIndex === -1) {
-//     return res.status(404).json({ message: 'Kategori tidak ditemukan' });
-//   }
-//   if (!name) {
-//     return res.status(400).json({ message: 'Nama kategori dibutuhkan' });
-//   }
-//   categoriesData[categoryIndex].name = name;
-//   categoriesData[categoryIndex].candidates = candidates || [];
-//   saveDataToFile();
-//   res.json({ message: 'Kategori berhasil diperbarui', category: categoriesData[categoryIndex] });
-// });
-
 app.delete('/api/categories/:categoryId/candidates/:candidateId', (req, res) => {
   const { categoryId, candidateId } = req.params;
   const categoryIndex = categoriesData.findIndex(cat => cat.id === categoryId);
