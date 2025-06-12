@@ -1,5 +1,8 @@
+// import hook dan komponen dari solid-js dan router
 import { createSignal, onMount, For, Show } from "solid-js";
 import { useParams, useNavigate } from "@solidjs/router";
+
+// import komponen dan asset
 import Navbar from "../../components/Navbar";
 import "../../assets/css/admin/dashboard.css";
 import "../../assets/css/admin/addCategory.css";
@@ -7,7 +10,7 @@ import remove from "../../assets/img/remove.png";
 import addIcon from "../../assets/img/add.png";
 
 export default function EditCategory() {
-  const params = useParams();
+  const params = useParams(); // ambil parameter dari url (categoryId)
   const navigate = useNavigate();
   const categoryIdToEdit = params.categoryId;
 
@@ -23,10 +26,8 @@ export default function EditCategory() {
   onMount(async () => {
     setIsLoading(true);
     setError(null);
-    setCategoryName("");
-    setCandidates([]);
-    setOriginalCategoryName("");
 
+    // validasi jika tidak ada id di url
     if (!categoryIdToEdit) {
       setError("ID Kategori tidak valid atau tidak ditemukan di URL.");
       setIsLoading(false);
@@ -34,24 +35,23 @@ export default function EditCategory() {
     }
 
     try {
+      // ambil semua kategori
       const response = await fetch('http://localhost:8080/api/categories');
       if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(`Gagal mengambil data. Status: ${response.status}. Pesan: ${errorText || response.statusText}`);
+        throw new Error(`Gagal mengambil data. Status: ${response.status}`);
       }
       const allCategories = await response.json();
-      // console.log("EditCategory.jsx - Semua kategori dari server:", allCategories);
 
+      // cari kategori yang akan diedit berdasarkan id
       const categoryToEdit = allCategories.find(c => c.id === categoryIdToEdit);
-      // console.log(`EditCategory.jsx - Kategori ditemukan untuk ID "${categoryIdToEdit}":`, categoryToEdit);
 
       if (categoryToEdit) {
         setOriginalCategoryName(categoryToEdit.name);
         setCategoryName(categoryToEdit.name);
         setCandidates(
-          categoryToEdit.candidates && Array.isArray(categoryToEdit.candidates) && categoryToEdit.candidates.length > 0
-            ? JSON.parse(JSON.stringify(categoryToEdit.candidates)) // Deep copy
-            : [{ name: "", photo: "" }] // Default jika tidak ada kandidat
+          categoryToEdit.candidates?.length > 0
+            ? JSON.parse(JSON.stringify(categoryToEdit.candidates))
+            : [{ name: "", photo: "" }]
         );
       } else {
         setError(`Kategori dengan ID "${categoryIdToEdit}" tidak ditemukan.`);
@@ -64,29 +64,57 @@ export default function EditCategory() {
     }
   });
 
+  // handler saat user mengubah data kandidat
   const handleCandidateChange = (index, field, value) => {
+    const updated = [...candidates()];
+    updated[index] = { ...updated[index], [field]: value };
+    setCandidates(updated);
+  };
+
+  // tambahkan field kandidat baru
+  const handleAddCandidate = () => {
+    setCandidates([...candidates(), { name: "", photo: "" }]);
+  };
+
+  // hapus kandidat dari daftar, hanya dari ui
+  const handleRemoveCandidate = (indexToRemove) => {
+    const candidateToRemove = candidates()[indexToRemove];
+
+    // jika belum disimpan, hapus langsung
+    if (!candidateToRemove.id) {
+      if (candidates().length > 1) {
+        setCandidates(candidates().filter((_, index) => index !== indexToRemove));
+      } else {
+        handleCandidateChange(indexToRemove, "name", "");
+        handleCandidateChange(indexToRemove, "photo", "");
+      }
+      return;
+    }
+
+    // jika punya id, konfirmasi sebelum hapus
+    if (!confirm(`Apakah Anda yakin ingin menghapus kandidat: "${candidateToRemove.name}"?`)) {
+      return;
+    }
+
+    setCandidates(candidates().filter((_, index) => index !== indexToRemove));
+  };
+
+  // simpan file foto untuk SEMENTARA ke dalam kandidat
+  const handlePhotoUpload = (index, file) => {
     const updatedCandidates = candidates().map((candidate, i) => {
       if (i === index) {
-        return { ...candidate, [field]: value };
+        return {
+          ...candidate,
+          photo: file.name,
+          photoFile: file
+        };
       }
       return candidate;
     });
     setCandidates(updatedCandidates);
   };
 
-  const handleAddCandidate = () => {
-    setCandidates([...candidates(), { name: "", photo: "" }]);
-  };
-
-  const handleRemoveCandidate = (indexToRemove) => {
-    if (candidates().length > 1) {
-      setCandidates(candidates().filter((_, index) => index !== indexToRemove));
-    } else {
-      handleCandidateChange(indexToRemove, "name", "");
-      handleCandidateChange(indexToRemove, "photo", "");
-    }
-  };
-
+  //  simpan perubahan kategori dan kandidat ke backend
   async function handleUpdateForm() {
     setIsSaving(true);
     setMessage("");
@@ -101,6 +129,7 @@ export default function EditCategory() {
     const validCandidates = candidates().filter(c => c.name && c.name.trim() !== "");
 
     const updatedCategoryData = {
+      id: categoryIdToEdit,
       name: categoryName(),
       candidates: validCandidates.map(c => ({
         id: c.id || (c.name.toLowerCase().replace(/\s+/g, '-')),
@@ -110,10 +139,17 @@ export default function EditCategory() {
     };
 
     try {
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(updatedCategoryData));
+      candidates().forEach((candidate) => {
+        if (candidate.photoFile) {
+          formData.append('photos', candidate.photoFile);
+        }
+      });
+
       const response = await fetch(`http://localhost:8080/api/categories/${categoryIdToEdit}`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(updatedCategoryData),
+        body: formData,
       });
 
       let result;
@@ -126,7 +162,7 @@ export default function EditCategory() {
       if (response.ok) {
         setMessage(result.message || "Category saved!");
         setOriginalCategoryName(categoryName());
-        setTimeout(() => { navigate("/admin"); }, 1500);
+        navigate("/admin");
       } else {
         setMessage(result.message || `Gagal memperbarui kategori. Status: ${response.status}`);
       }
@@ -138,10 +174,33 @@ export default function EditCategory() {
     }
   }
 
+  // jika tombol cancel ditekan, ambil data yang tidak terubah di backend
   const cancelEdit = () => {
-    navigate("/admin");
+    fetch('http://localhost:8080/api/categories')
+      .then(res => res.json())
+      .then(allCategories => {
+        const categoryToEdit = allCategories.find(c => c.id === categoryIdToEdit);
+        if (categoryToEdit) {
+          setCandidates(
+            categoryToEdit.candidates?.length > 0
+              ? JSON.parse(JSON.stringify(categoryToEdit.candidates))
+              : [{ name: "", photo: "" }]
+          );
+          setCategoryName(categoryToEdit.name);
+          setMessage("");
+          setError(null);
+          navigate("/admin");
+        } else {
+          setError(`Kategori dengan ID "${categoryIdToEdit}" tidak ditemukan.`);
+        }
+      })
+      .catch(err => {
+        console.error("Error saat memuat ulang data kategori:", err);
+        setError("Gagal memuat ulang data kategori.");
+      });
   };
 
+  // ui render
   return (
     <div>
       <Navbar />
@@ -165,7 +224,7 @@ export default function EditCategory() {
                 <input id="categoryNameInput"
                   type="text" class="input-category" placeholder="Category Name"
                   value={categoryName()}
-                  onInput={(e) => setCategoryName(e.currentTarget.value)}
+                  onChange={(e) => setCategoryName(e.currentTarget.value)}
                   required
                 />
               </div>
@@ -177,16 +236,24 @@ export default function EditCategory() {
                       <input id={`candidateName-${index()}`}
                         class="input-category" type="text" placeholder="Artist Name"
                         value={candidate.name}
-                        onInput={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
+                        onChange={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
                       />
-                      <img src={remove} class="delete-btn" />
+                      <img src={remove} class="delete-btn" onClick={() => handleRemoveCandidate(index())} alt="Remove" />
                     </div>
                     <div class="foto">
-                      <p>{candidate.photo}</p>
-                      <button type="button" class="upload-photo">Upload photo</button>
+                      <p>{candidate.photo || "No file chosen"}</p>
+                      <input
+                        type="file"
+                        name="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.currentTarget.files[0];
+                          if (file) {
+                            handlePhotoUpload(index(), file);
+                          }
+                        }}
+                      />
                     </div>
-
-
                   </div>
                 )}
               </For>

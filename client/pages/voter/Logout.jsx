@@ -6,6 +6,7 @@ export default function Logout(){
     
     onMount(() => {
         localStorage.removeItem("logged_user");
+        localStorage.removeItem("auth_token");
         navigate("/", {replace: true});
     });
 }

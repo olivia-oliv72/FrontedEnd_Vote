@@ -9,11 +9,11 @@ import addIcon from "../../assets/img/add.png";
 export default function AddCategory() {
   const navigate = useNavigate();
 
+
   const [categoryName, setCategoryName] = createSignal("");
   const [candidates, setCandidates] = createSignal([{ name: "", photo: "" }]);
-  const [isLoading, setIsLoading] = createSignal(false);
+  const [isSaving, setIsSaving] = createSignal(false);
   const [message, setMessage] = createSignal("");
-
   const handleAddCandidate = () => {
     setCandidates([...candidates(), { name: "", photo: "" }]);
   };
@@ -22,43 +22,48 @@ export default function AddCategory() {
     setCandidates(candidates().filter((_, index) => index !== indexToRemove));
   };
 
+  // memperbarui properti nama atau foto kandidat
   const handleCandidateChange = (index, field, value) => {
+    const updated = [...candidates()];
+    updated[index] = { ...updated[index], [field]: value };
+    setCandidates(updated);
+  };
+
+  const handlePhotoUpload = (index, file) => {
     const updatedCandidates = candidates().map((candidate, i) => {
       if (i === index) {
-        return { ...candidate, [field]: value };
+        return {
+          ...candidate,
+          photo: file.name, // menyimpan nama file untuk ditampilkan
+          photoFile: file // menyimpan file foto asli untuk diunggah
+        };
       }
       return candidate;
     });
     setCandidates(updatedCandidates);
   };
 
-  const handlePhotoUploadPlaceholder = (index, event) => {
-    if (event.target.files && event.target.files[0]) {
-      const fileName = event.target.files[0].name;
-      handleCandidateChange(index, "photo", fileName);
-      console.log(`File dipilih untuk kandidat ${index}: ${fileName}`);
-    }
-  };
-
 
   async function handleSaveForm() {
-    setIsLoading(true);
+    setIsSaving(true);
     setMessage("");
+
 
     if (!categoryName().trim()) {
       setMessage("Nama kategori tidak boleh kosong.");
-      setIsLoading(false);
       return;
     }
 
+    // memvalidasi setidaknya ada satu kandidat
     const validCandidates = candidates().filter(c => c.name.trim() !== "");
     if (validCandidates.length === 0) {
       setMessage("Minimal harus ada satu kandidat");
-      setIsLoading(false);
       return;
     }
 
+    // membuat id dengan format "-"
     const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-');
+
 
     const newCategoryData = {
       id: categoryId,
@@ -66,26 +71,32 @@ export default function AddCategory() {
       candidates: validCandidates.map(c => ({
         id: c.name.toLowerCase().replace(/\s+/g, '-'),
         name: c.name,
-        photo: c.photo || 'placeholder.png'
+        photo: c.photo || 'placeholder.png' // menggunakan placeholder jika tidak ada foto
       })),
     };
 
     try {
+      // membuat FormData untuk mengirim JSON dan file
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(newCategoryData));
+      candidates().forEach((candidate) => {
+        if (candidate.photoFile) {
+          formData.append('photos', candidate.photoFile);
+        }
+      });
+
+
       const response = await fetch('http://localhost:8080/api/categories', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCategoryData),
+        body: formData,
       });
 
       const result = await response.json();
 
+
       if (response.ok) {
         setMessage("Category saved!");
-        setTimeout(() => {
-          navigate("/admin");
-        }, 1500);
+        navigate("/admin");
       } else {
         setMessage(result.message || "Gagal menyimpan kategori. Coba lagi.");
       }
@@ -93,9 +104,10 @@ export default function AddCategory() {
       console.error("Error saat menyimpan kategori:", error);
       setMessage("Tidak dapat terhubung ke server.");
     } finally {
-      setIsLoading(false);
+      setIsSaving(false)
     }
   }
+
 
   const cancelSave = () => {
     navigate("/admin");
@@ -108,6 +120,7 @@ export default function AddCategory() {
         <div class="title-container">
           <h1 class="title">Add New Category</h1>
         </div>
+        {/* formulir untuk input kategori dan kandidat */}
         <form onSubmit={e => { e.preventDefault(); handleSaveForm(); }}>
           <div class="container-form">
             <div class="category-container">
@@ -115,7 +128,7 @@ export default function AddCategory() {
               <input id="categoryNameInput"
                 type="text" class="input-category" placeholder="Category Name"
                 value={categoryName()}
-                onInput={(e) => setCategoryName(e.currentTarget.value)}
+                onChange={(e) => setCategoryName(e.currentTarget.value)}
                 required
               />
             </div>
@@ -130,12 +143,9 @@ export default function AddCategory() {
                       type="text"
                       placeholder="Artist Name"
                       value={candidate.name}
-                      onInput={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
+                      onChange={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
                     />
-                  </div>
-                  <button type="button" class="upload-photo">Upload photo</button>
 
-                  <Show when={candidates().length > 1}>
                     <button
                       type="button"
                       class="remove-candidate-btn"
@@ -143,9 +153,25 @@ export default function AddCategory() {
                     >
                       <img src={removeIcon} alt="Remove Candidate" style={{ width: "20px", height: "20px" }} />
                     </button>
-                  </Show>
+                  </div>
+                  <div class="foto">
+                    <p>{candidate.photo || "No file chosen"}</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.currentTarget.files[0];
+                        if (file) {
+                          handlePhotoUpload(index(), file);
+                        }
+                      }}
+                    />
+                  </div>
+
                 </div>
+
               )}
+
             </For>
 
             <div class="buttons-form-actions">
@@ -154,9 +180,9 @@ export default function AddCategory() {
               </button>
               {message() && <p class="message-feedback">{message()}</p>}
               <div class="cancel-save-btn">
-                <button type="button" onClick={cancelSave} disabled={isLoading()}>Cancel</button>
-                <button type="submit" disabled={isLoading()}>
-                  {isLoading() ? 'Saving...' : 'Save'}
+                <button type="button" onClick={cancelSave} disabled={isSaving()}>Cancel</button>
+                <button type="submit" disabled={isSaving()}>
+                  {isSaving() ? 'Saving...' : 'Save'}
                 </button>
               </div>
             </div>
