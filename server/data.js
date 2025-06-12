@@ -1,3 +1,4 @@
+
 export const roleUsers = [
   {
     "id": 1,
@@ -199,25 +200,3 @@ export const initialCategories = [
   }
 ];
 
-export const history = [
-  {
-    "email": "user@gmail.com",
-    "vote": [
-      {
-        "category": "Best Female",
-        "name": "IU",
-        "photo": "iu.jpg"
-      },
-      {
-        "category": "Best Male",
-        "name": "TXT",
-        "photo": "iu.png"
-      },
-      {
-        "category": "Best Collaboration",
-        "name": "Zico",
-        "photo": "iu.png"
-      }
-    ]
-  }
-];

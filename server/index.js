@@ -2,11 +2,11 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import cors from 'cors';
-import { roleUsers, initialCategories, history as initialHistoryData } from './data.js';
+import { roleUsers, initialCategories } from './data.js';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
-
+import multer from 'multer';
 const app = express();
 const PORT = 8080;
 const secret = 'frontedEnd_Vote';
@@ -15,12 +15,68 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, 'data.js');
 
+// Middleware umum
+app.use(cors());
+app.use(express.json());
+app.use("/photo-candidates", express.static(path.join(__dirname, "photo-candidates")));
+
+
 let usersData = [...roleUsers];
 let categoriesData = [...initialCategories];
-let historyData = [...initialHistoryData];
+
 
 app.use(cors());
 app.use(express.json());
+
+// Storage multer untuk menyimpan file dengan nama sesuai `photo`
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(__dirname, "photo-candidates"));
+  },
+  filename: (req, file, cb) => {
+    const candidateData = JSON.parse(req.body.data).candidates;
+    const index = req.files.findIndex(f => f === file);
+    const name = candidateData[index]?.photo || file.originalname;
+    cb(null, name);
+  }
+});
+const upload = multer({ storage });
+
+// PUT update kategori
+app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const updatedData = JSON.parse(req.body.data);
+    const index = categoriesData.findIndex((cat) => cat.id === categoryId);
+
+    if (index === -1) {
+      return res.status(404).json({ message: "Category not found" });
+    }
+
+    categoriesData[index].name = updatedData.name;
+    categoriesData[index].candidates = updatedData.candidates || [];
+    // jangan ubah categoriesData[index].id
+
+    saveDataToFile();
+
+    res.json({ message: "Category updated successfully", category: updatedData });
+  } catch (err) {
+    console.error('PUT /api/categories/:id error:', err);
+    res.status(500).json({ message: "Internal Server Error", error: err.message });
+  }
+});
+
+app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
+  console.log("ID kategori:", req.params.id);
+  console.log("Data dari client:", req.body.data);
+  console.log("Files uploaded:", req.files?.map(f => f.filename));
+});
+
+// Jalankan server
+app.listen(PORT, () => {
+  console.log(`Server listening on http://localhost:${PORT}`);
+});
+
 
 function saveDataToFile() {
   const fileContent = `
@@ -28,7 +84,6 @@ export const roleUsers = ${JSON.stringify(usersData, null, 2)};
 
 export const initialCategories = ${JSON.stringify(categoriesData, null, 2)};
 
-export const history = ${JSON.stringify(historyData, null, 2)};
 `;
   try {
     fs.writeFileSync(dataPath, fileContent, 'utf-8');
@@ -79,16 +134,6 @@ app.get('/api/users', (req, res) => {
   res.json(usersWithoutPasswords);
 });
 
-app.get('/api/history/:email', (req, res) => {
-  const userEmail = req.params.email;
-  const userHistory = historyData.find(h => h.email === userEmail);
-  if (userHistory) {
-    res.json({ success: true, history: userHistory });
-  } else {
-    res.status(404).json({ success: false, message: 'Riwayat voting tidak ditemukan' });
-  }
-});
-
 const saltRounds = 10;
 
 app.post('/api/auth/register', async (req, res) => {
@@ -133,35 +178,36 @@ app.post('/api/auth/login', async (req, res) => {
   }
 });
 
-app.post('/api/categories', (req, res) => {
-  const { id, name, candidates } = req.body;
-  if (!id || !name) {
-    return res.status(400).json({ message: 'ID dan Nama kategori dibutuhkan' });
+app.post('/api/categories', upload.array('photos'), (req, res) => {
+  try {
+    const { data } = req.body;
+    const parsedData = JSON.parse(data);
+
+    const { id, name, candidates } = parsedData;
+    if (!id || !name) {
+      return res.status(400).json({ message: 'ID dan Nama kategori dibutuhkan' });
+    }
+
+    if (categoriesData.find(cat => cat.id === id)) {
+      return res.status(409).json({ message: 'Kategori dengan ID tersebut sudah ada' });
+    }
+
+    const newCategory = {
+      id,
+      name,
+      candidates: candidates || [],
+    };
+
+    categoriesData.push(newCategory);
+    saveDataToFile();
+
+    res.status(201).json({ message: 'Kategori berhasil ditambahkan', category: newCategory });
+  } catch (err) {
+    console.error("POST /api/categories error:", err);
+    res.status(500).json({ message: "Internal server error", error: err.message });
   }
-  if (categoriesData.find(cat => cat.id === id)) {
-    return res.status(409).json({ message: 'Kategori dengan ID tersebut sudah ada' });
-  }
-  const newCategory = { id, name, candidates: candidates || [] };
-  categoriesData.push(newCategory);
-  saveDataToFile();
-  res.status(201).json({ message: 'Kategori berhasil ditambahkan', category: newCategory });
 });
 
-app.put('/api/categories/:id', (req, res) => {
-  const categoryId = req.params.id;
-  const { name, candidates } = req.body;
-  const categoryIndex = categoriesData.findIndex(cat => cat.id === categoryId);
-  if (categoryIndex === -1) {
-    return res.status(404).json({ message: 'Kategori tidak ditemukan' });
-  }
-  if (!name) {
-    return res.status(400).json({ message: 'Nama kategori dibutuhkan' });
-  }
-  categoriesData[categoryIndex].name = name;
-  categoriesData[categoryIndex].candidates = candidates || [];
-  saveDataToFile();
-  res.json({ message: 'Kategori berhasil diperbarui', category: categoriesData[categoryIndex] });
-});
 
 app.delete('/api/categories/:categoryId/candidates/:candidateId', (req, res) => {
   const { categoryId, candidateId } = req.params;
