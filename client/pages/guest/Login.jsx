@@ -53,7 +53,7 @@ function Login() {
 
         saveUser(user)
 
-        // Navigasi berdasarkan peran dari server
+        //Navigasi berdasarkan peran
         if (user.role === "admin") {
           navigate("/admin");
         } else if (user.role === "user") {
@@ -76,13 +76,6 @@ function Login() {
     event.preventDefault();
     setIsLoadingRegister(true);
     setRegisterMessage("");
-    // console.log("Data registrasi:", {
-    //   username: registerUsername(),
-    //   email: registerEmail(),
-    //   password: registerPassword(),
-    // });
-
-
 
     try {
       const response = await fetch('http://localhost:8080/api/auth/register', {
@@ -110,8 +103,6 @@ function Login() {
     }
 
   }
-
-
 
   return (
     <div class="page">

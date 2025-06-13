@@ -1,4 +1,4 @@
-import { createSignal, For, onMount } from "solid-js";
+import { createSignal, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import Navbar from "../../components/Navbar";
 import "../../assets/css/admin/dashboard.css";
@@ -9,33 +9,31 @@ import addIcon from "../../assets/img/add.png";
 export default function AddCategory() {
   const navigate = useNavigate();
 
-
+  //State
   const [categoryName, setCategoryName] = createSignal("");
   const [candidates, setCandidates] = createSignal([{ name: "", photo: "" }]);
   const [isSaving, setIsSaving] = createSignal(false);
   const [message, setMessage] = createSignal("");
+  
+  //Handler
   const handleAddCandidate = () => {
     setCandidates([...candidates(), { name: "", photo: "" }]);
   };
-
   const handleRemoveCandidate = (indexToRemove) => {
     setCandidates(candidates().filter((_, index) => index !== indexToRemove));
   };
-
-  // memperbarui properti nama atau foto kandidat
   const handleCandidateChange = (index, field, value) => {
     const updated = [...candidates()];
     updated[index] = { ...updated[index], [field]: value };
     setCandidates(updated);
   };
-
   const handlePhotoUpload = (index, file) => {
     const updatedCandidates = candidates().map((candidate, i) => {
       if (i === index) {
         return {
           ...candidate,
-          photo: file.name, // menyimpan nama file untuk ditampilkan
-          photoFile: file // menyimpan file foto asli untuk diunggah
+          photo: file.name, //nama file
+          photoFile: file //objek file asli
         };
       }
       return candidate;
@@ -43,56 +41,50 @@ export default function AddCategory() {
     setCandidates(updatedCandidates);
   };
 
-
+  //Submission (seudah klik save)
   async function handleSaveForm() {
     setIsSaving(true);
     setMessage("");
 
-
+    //Validasi
     if (!categoryName().trim()) {
-      setMessage("Nama kategori tidak boleh kosong.");
+      setMessage("Cannot be empty");
       return;
     }
-
-    // memvalidasi setidaknya ada satu kandidat
     const validCandidates = candidates().filter(c => c.name.trim() !== "");
     if (validCandidates.length === 0) {
-      setMessage("Minimal harus ada satu kandidat");
+      setMessage("At least have 1 candidate");
       return;
     }
 
-    // membuat id dengan format "-"
     const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-');
-
-
     const newCategoryData = {
       id: categoryId,
       name: categoryName(),
       candidates: validCandidates.map(c => ({
         id: c.name.toLowerCase().replace(/\s+/g, '-'),
         name: c.name,
-        photo: c.photo || 'placeholder.png' // menggunakan placeholder jika tidak ada foto
+        photo: c.photo || 'placeholder.png'
       })),
     };
 
     try {
-      // membuat FormData untuk mengirim JSON dan file
+      //FormData untuk mengirim JSON dan file
       const formData = new FormData();
-      formData.append('data', JSON.stringify(newCategoryData));
+      formData.append('data', JSON.stringify(newCategoryData)); //teks (JSON)
       candidates().forEach((candidate) => {
         if (candidate.photoFile) {
-          formData.append('photos', candidate.photoFile);
+          formData.append('photos', candidate.photoFile); //file gambar
         }
       });
 
-
+      //kirim formData ke server
       const response = await fetch('http://localhost:8080/api/categories', {
         method: 'POST',
         body: formData,
       });
 
       const result = await response.json();
-
 
       if (response.ok) {
         setMessage("Category saved!");
@@ -108,7 +100,7 @@ export default function AddCategory() {
     }
   }
 
-
+  //Batal melakukan perubahan
   const cancelSave = () => {
     navigate("/admin");
   };
@@ -120,7 +112,7 @@ export default function AddCategory() {
         <div class="title-container">
           <h1 class="title">Add New Category</h1>
         </div>
-        {/* formulir untuk input kategori dan kandidat */}
+        {/* formulir */}
         <form onSubmit={e => { e.preventDefault(); handleSaveForm(); }}>
           <div class="container-form">
             <div class="category-container">

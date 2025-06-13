@@ -16,7 +16,6 @@ export default function TeaserCandidates() {
 
     try {
       const response = await fetch('http://localhost:8080/api/categories');
-
       const serverData = await response.json();
 
       setCategories(serverData);
@@ -36,10 +35,7 @@ export default function TeaserCandidates() {
   return (
     <div class="container-candidates">
       <Show when={isLoading()}>
-        <p>Memuat kandidat...</p>
-      </Show>
-      <Show when={error()}>
-        <p style={{ color: 'red' }}>Error: {error()}</p>
+        <p>Loading...</p>
       </Show>
       <Show when={!isLoading() && !error() && categories().length > 0}>
         <For each={categories()}>

@@ -1,26 +1,27 @@
-
 import { createSignal, onMount, For, Show } from "solid-js"; // Impor Show untuk loading/error
 import "../../assets/css/admin/awardtable.css";
 import { useNavigate } from "@solidjs/router";
 import editButton from "../../assets/img/edit.png";
 
 export default function AwardsTable() {
+  const navigate = useNavigate();
+
+  //State
   const [categories, setCategories] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
-  const navigate = useNavigate();
 
   onMount(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
+      //ambil dari endpoint 
       const response = await fetch('http://localhost:8080/api/categories');
-      if (!response.ok) {
-        throw new Error(`Gagal mengambil data kategori. Status: ${response.status}`);
-      }
+      
       const serverData = await response.json();
       setCategories(serverData);
+
     } catch (err) {
       console.error("Error fetching categories for awards table:", err);
       setError(err.message || "Terjadi kesalahan saat mengambil data.");
@@ -32,7 +33,7 @@ export default function AwardsTable() {
   return (
     <div class="container-candidates">
       <Show when={isLoading()}>
-        <p>Memuat data penghargaan...</p>
+        <p>Loading...</p>
       </Show>
       <Show when={error()}>
         <p style={{ color: 'red' }}>Error: {error()}</p>
@@ -71,20 +72,10 @@ export default function AwardsTable() {
                     </tr>
                   )}
                 </For>
-                <Show when={!category.candidates || category.candidates.length === 0}>
-                  <tr>
-                    <td colspan={2} style={{ "text-align": "center", "padding": "10px" }}>
-                      Tidak ada kandidat dalam kategori ini.
-                    </td>
-                  </tr>
-                </Show>
               </tbody>
             </table>
           )}
         </For>
-      </Show>
-      <Show when={!isLoading() && !error() && categories().length === 0}>
-        <p>Tidak ada data penghargaan yang tersedia.</p>
       </Show>
     </div>
   );
