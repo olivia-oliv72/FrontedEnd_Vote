@@ -3,7 +3,6 @@ import Navbar from "../../components/Navbar";
 import AwardsTable from "./AwardsTable"
 import { useNavigate } from "@solidjs/router";
 
-
 export default function Home() {
     const navigate = useNavigate();
 
@@ -28,10 +27,6 @@ export default function Home() {
                     <AwardsTable />
                 </div>
             </div>
-
-
         </div>
-
-
     );
 }

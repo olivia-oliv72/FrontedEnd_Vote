@@ -1,4 +1,4 @@
-import { createSignal, For, onMount } from "solid-js";
+import { createSignal, For } from "solid-js";
 import { useNavigate } from "@solidjs/router";
 import Navbar from "../../components/Navbar";
 import removeIcon from "../../assets/img/remove.png";
@@ -7,48 +7,49 @@ import addIcon from "../../assets/img/add.png";
 export default function AddCategory() {
   const navigate = useNavigate();
 
+  //State
   const [categoryName, setCategoryName] = createSignal("");
   const [candidates, setCandidates] = createSignal([{ name: "", photo: "" }]);
-  const [isLoading, setIsLoading] = createSignal(false);
+  const [isSaving, setIsSaving] = createSignal(false);
   const [message, setMessage] = createSignal("");
-
+  
+  //Handler
   const handleAddCandidate = () => {
     setCandidates([...candidates(), { name: "", photo: "" }]);
   };
-
   const handleRemoveCandidate = (indexToRemove) => {
     setCandidates(candidates().filter((_, index) => index !== indexToRemove));
   };
-
   const handleCandidateChange = (index, field, value) => {
+    const updated = [...candidates()];
+    updated[index] = { ...updated[index], [field]: value };
+    setCandidates(updated);
+  };
+  const handlePhotoUpload = (index, file) => {
     const updatedCandidates = candidates().map((candidate, i) => {
       if (i === index) {
-        return { ...candidate, [field]: value };
+        return {
+          ...candidate,
+          photo: file.name, //nama file
+          photoFile: file //objek file asli
+        };
       }
       return candidate;
     });
     setCandidates(updatedCandidates);
   };
 
-  const handlePhotoUploadPlaceholder = (index, event) => {
-    if (event.target.files && event.target.files[0]) {
-      const fileName = event.target.files[0].name;
-      handleCandidateChange(index, "photo", fileName);
-      console.log(`File dipilih untuk kandidat ${index}: ${fileName}`);
-    }
-  };
-
-
+  //Submission (seudah klik save)
   async function handleSaveForm() {
-    setIsLoading(true);
+    setIsSaving(true);
     setMessage("");
 
+    //Validasi
     if (!categoryName().trim()) {
       setMessage("Category name cannot be empty.");
       setIsLoading(false);
       return;
     }
-
     const validCandidates = candidates().filter(c => c.name.trim() !== "");
     if (validCandidates.length === 0) {
       setMessage("Make sure there is a valid candidate.");
@@ -56,25 +57,31 @@ export default function AddCategory() {
       return;
     }
 
-    const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-') + '-' + Date.now();
-
+    const categoryId = categoryName().toLowerCase().replace(/\s+/g, '-');
     const newCategoryData = {
       id: categoryId,
       name: categoryName(),
       candidates: validCandidates.map(c => ({
-        id: c.name.toLowerCase().replace(/\s+/g, '-') + '-' + Math.random().toString(36).substr(2, 5),
+        id: c.name.toLowerCase().replace(/\s+/g, '-'),
         name: c.name,
         photo: c.photo || 'placeholder.png'
       })),
     };
 
     try {
+      //FormData untuk mengirim JSON dan file
+      const formData = new FormData();
+      formData.append('data', JSON.stringify(newCategoryData)); //teks (JSON)
+      candidates().forEach((candidate) => {
+        if (candidate.photoFile) {
+          formData.append('photos', candidate.photoFile); //file gambar
+        }
+      });
+
+      //kirim formData ke server
       const response = await fetch('http://localhost:8080/api/categories', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newCategoryData),
+        body: formData,
       });
 
       const result = await response.json();
@@ -91,10 +98,11 @@ export default function AddCategory() {
       console.error("Error saat menyimpan kategori:", error);
       setMessage("Tidak dapat terhubung ke server.");
     } finally {
-      setIsLoading(false);
+      setIsSaving(false)
     }
   }
 
+  //Batal melakukan perubahan
   const cancelSave = () => {
     navigate("/admin");
   };
@@ -106,6 +114,7 @@ export default function AddCategory() {
         <div class="title-container flex justify-start w-[65vh]">
           <h1 class="title text-[25px] text-[#fff] font-bold mb-[20px]">Add New Category</h1>
         </div>
+        {/* formulir */}
         <form onSubmit={e => { e.preventDefault(); handleSaveForm(); }}>
           <div class="container-form bg-[#fff] p-[30px] rounded-[5px] w-fit">
             <div class="category-container">
@@ -119,7 +128,7 @@ export default function AddCategory() {
                 type="text"
                 placeholder="Category Name"
                 value={categoryName()}
-                onInput={(e) => setCategoryName(e.currentTarget.value)}
+                onChange={(e) => setCategoryName(e.currentTarget.value)}
                 required
               />
             </div>
@@ -135,7 +144,7 @@ export default function AddCategory() {
                       type="text"
                       placeholder="Artist Name"
                       value={candidate.name}
-                      onInput={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
+                      onChange={e => handleCandidateChange(index(), "name", e.currentTarget.value)}
                     />
                     <Show when={candidates().length > 1}>
                       <button
@@ -158,10 +167,23 @@ export default function AddCategory() {
                       Upload photo
                     </button>
                   </div>
+                  <div class="foto">
+                    <p>{candidate.photo || "No file chosen"}</p>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.currentTarget.files[0];
+                        if (file) {
+                          handlePhotoUpload(index(), file);
+                        }
+                      }}
+                    />
+                  </div>
                 </div>
               )}
-            </For>
 
+            </For>
             <div class="buttons-form-actions flex flex-col self-end">
               <button
                 type="button"

@@ -3,22 +3,26 @@ import { useNavigate } from "@solidjs/router";
 import editButton from "../../assets/img/edit.png";
 
 export default function AwardsTable() {
+  const navigate = useNavigate();
+
+  //State
   const [categories, setCategories] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
-  const navigate = useNavigate();
 
   onMount(async () => {
     setIsLoading(true);
     setError(null);
 
     try {
+      //ambil dari endpoint 
       const response = await fetch('http://localhost:8080/api/categories');
       if (!response.ok) {
         throw new Error(`Failed to fetch category. Status: ${response.status}`);
       }
       const serverData = await response.json();
       setCategories(serverData);
+
     } catch (err) {
       console.error("Error fetching categories for awards table:", err);
       setError(err.message || "Failed to fetch data.");
@@ -84,9 +88,6 @@ export default function AwardsTable() {
             </table>
           )}
         </For>
-      </Show>
-      <Show when={!isLoading() && !error() && categories().length === 0}>
-        <p>Tidak ada data penghargaan yang tersedia.</p>
       </Show>
     </div>
   );

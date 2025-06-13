@@ -16,7 +16,6 @@ export default function TeaserCandidates() {
 
     try {
       const response = await fetch('http://localhost:8080/api/categories');
-
       const serverData = await response.json();
 
       setCategories(serverData);

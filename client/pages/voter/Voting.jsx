@@ -4,6 +4,7 @@ import { For, createSignal, onMount, Show, createEffect } from "solid-js";
 import { useParams, useNavigate } from "@solidjs/router";
 import Banner from "../../components/banner.jsx";
 import Footer from "../../components/footer.jsx";
+import { getUser } from "../../utils/authentication.js";
 
 function Voting() {
   const params = useParams();
@@ -47,7 +48,7 @@ function Voting() {
 
   createEffect(() => {
     const query = searchQuery().toLowerCase();
-    if(allCandidates()) {
+    if (allCandidates()) {
       const filtered = allCandidates().filter(candidate =>
         candidate.name.toLowerCase().includes(query)
       );
@@ -66,8 +67,43 @@ function Voting() {
   }
 
   function confirmVote() {
+    const user = getUser();
+    if (!user) {
+      alert("Silakan login terlebih dahulu.");
+      return;
+    }
+
+    const storageKey = `history_${user.email}`;
+    const previousVotes = JSON.parse(localStorage.getItem(storageKey)) || [];
+
+    const alreadyVoted = previousVotes.some(vote => vote.category === category().name);
+    if (alreadyVoted) {
+      alert(`Kamu sudah melakukan voting untuk kategori "${category().name}".`);
+      setShowOverlay(false); //sembunyikan overlay
+      return;
+    }
+
+    const voteData = {
+      category: category().name,
+      candidateId: selectedCandidate().id,
+      name: selectedCandidate().name,
+      photo: selectedCandidate().photo,
+    };
+
+    const updatedVotes = [...previousVotes, voteData];
+    localStorage.setItem(storageKey, JSON.stringify(updatedVotes));
+
     navigate(`/confirmation/${categoryId}/${selectedCandidate().id}`);
   }
+
+
+  function hasAlreadyVoted() {
+    const user = getUser();
+    const storageKey = `history_${user?.email}`;
+    const previousVotes = JSON.parse(localStorage.getItem(storageKey)) || [];
+    return previousVotes.some(v => v.category === category().name);
+  }
+
 
   function handlePagination() {
     const totalPages = Math.ceil(displayCandidates().length / 5);
@@ -159,11 +195,17 @@ function Voting() {
                 <div class="rightArrow h-[60px] w-[70px] cursor-pointer" onClick={handlePagination}><img src={arrow} alt="Kanan" /></div>
               </Show>
             </div>
-            <Show when={selectedCandidate()}>
+            <Show when={selectedCandidate() && !hasAlreadyVoted()}>
               <p class="selected-name font-larger text-[#fff]">Your Pick: <strong>{selectedCandidate().name}</strong></p>
               <div class="voteButton" onClick={handleVoteClick}>
                 <button class="w-[150px] h-[40px] m-[10px] rounded-[10px] cursor-pointer bg-[#e3c365] font-bold">Vote</button>
               </div>
+
+
+            </Show>
+
+            <Show when={hasAlreadyVoted()}>
+              <p class="already-voted">You have already voted for this category</p>
             </Show>
           </div>
         </div>

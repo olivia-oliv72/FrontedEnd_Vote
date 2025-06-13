@@ -1,34 +1,22 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
 import { getUser } from "../../utils/authentication";
 
-
 export default function History() {
   const [userVotes, setUserVotes] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(true);
   const [error, setError] = createSignal(null);
   const [currentUser, setCurrentUser] = createSignal(null);
 
-  onMount(async () => {
+  onMount(() => {
     const user = getUser();
-
     setCurrentUser(user);
+
     setIsLoading(true);
     setError(null);
 
     try {
-      const token = localStorage.getItem('auth_token');
-      const response = await fetch(`http://localhost:8080/api/history/${user.email}`, {
-        headers: {
-          Authorization: token,
-        }
-      });
-
-      if (!response.ok) {
-        setUserVotes([]);
-      } else {
-        const dataFromServer = await response.json();
-        setUserVotes(dataFromServer.history.vote);
-      }
+      const history = JSON.parse(localStorage.getItem(`history_${user.email}`)) || [];
+      setUserVotes(history);
     } catch (err) {
       setError(err.message || "Failed to fetch history.");
     } finally {

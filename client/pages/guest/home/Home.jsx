@@ -2,9 +2,10 @@ import NavbarGuest from "../../../components/Navbar";
 import TeaserCandidates from "./TeaserCandidates";
 import Banner from "../../../components/banner"
 import Footer from "../../../components/footer"
-import '../../../index.css';
+import CountdownTimer from "../../../components/timer";
 
 export default function Home() {
+  const voting_end_time = "2025-06-13T23:59:59"
   return (
     <div>
       {/* Header */}
@@ -17,10 +18,7 @@ export default function Home() {
       </p>
 
       {/* Countdown Time*/}
-      <div class="container-timer flex flex-col p-[15px] items-center justify-center">
-        <h2 class="m-0 text-[#fff] text-[20px]">Remaining Time:</h2>
-        <h1 class="font-bold text-[#fff] text-[50px]">00:00:00</h1>
-      </div>
+      <CountdownTimer deadline={voting_end_time}/>
 
       {/* Categories */}
       <TeaserCandidates/>

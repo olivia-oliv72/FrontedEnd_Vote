@@ -1,9 +1,6 @@
-// client/src/utils/localStorage.js 
-
 const CATEGORIES_CACHE_KEY = "award_categories_cache";
 const HISTORY_CACHE_KEY_PREFIX = "user_history_cache_";
 
-// Untuk kategori (sebagai cache)
 export function getCachedCategories() {
   const stored = localStorage.getItem(CATEGORIES_CACHE_KEY);
   return stored ? JSON.parse(stored) : null;
@@ -12,7 +9,6 @@ export function getCachedCategories() {
 export function cacheCategories(categoriesData) {
   localStorage.setItem(CATEGORIES_CACHE_KEY, JSON.stringify(categoriesData));
 }
-
 
 export function getCachedUserHistory(email) {
   if (!email) return null;
