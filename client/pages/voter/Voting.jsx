@@ -77,11 +77,10 @@ function Voting() {
     const storageKey = `history_${user.email}`;
     const previousVotes = JSON.parse(localStorage.getItem(storageKey)) || [];
 
-    // ❗ Cek apakah user sudah vote untuk kategori ini
     const alreadyVoted = previousVotes.some(vote => vote.category === category().name);
     if (alreadyVoted) {
       alert(`Kamu sudah melakukan voting untuk kategori "${category().name}".`);
-      setShowOverlay(false); // sembunyikan overlay
+      setShowOverlay(false); //sembunyikan overlay
       return;
     }
 

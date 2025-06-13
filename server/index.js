@@ -7,6 +7,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { fileURLToPath } from 'url';
 import multer from 'multer';
+
 const app = express();
 const PORT = 8080;
 const secret = 'frontedEnd_Vote';
@@ -15,20 +16,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const dataPath = path.join(__dirname, 'data.js');
 
-// Middleware umum
 app.use(cors());
 app.use(express.json());
 app.use("/photo-candidates", express.static(path.join(__dirname, "photo-candidates")));
 
-
 let usersData = [...roleUsers];
 let categoriesData = [...initialCategories];
 
-
-app.use(cors());
-app.use(express.json());
-
-// Storage multer untuk menyimpan file dengan nama sesuai `photo`
+//multer untuk menyimpan file dengan nama sesuai `photo`
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, "photo-candidates"));
@@ -42,7 +37,7 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// PUT update kategori
+//update kategori
 app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
   try {
     const categoryId = req.params.id;
@@ -55,10 +50,8 @@ app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
 
     categoriesData[index].name = updatedData.name;
     categoriesData[index].candidates = updatedData.candidates || [];
-    // jangan ubah categoriesData[index].id
 
     saveDataToFile();
-
     res.json({ message: "Category updated successfully", category: updatedData });
   } catch (err) {
     console.error('PUT /api/categories/:id error:', err);
@@ -66,22 +59,14 @@ app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
   }
 });
 
-app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
-  console.log("ID kategori:", req.params.id);
-  console.log("Data dari client:", req.body.data);
-  console.log("Files uploaded:", req.files?.map(f => f.filename));
-});
-
-// Jalankan server
+//Jalankan server
 app.listen(PORT, () => {
   console.log(`Server listening on http://localhost:${PORT}`);
 });
 
-
 function saveDataToFile() {
   const fileContent = `
 export const roleUsers = ${JSON.stringify(usersData, null, 2)};
-
 export const initialCategories = ${JSON.stringify(categoriesData, null, 2)};
 
 `;
@@ -98,6 +83,7 @@ function sign(data) {
   const sig = crypto.createHmac('sha512', secret).update(plain).digest('base64');
   return `${plain}.${sig}`;
 }
+
 function verify(token) {
   if (!token || typeof token !== 'string') return null;
   const parts = token.split('.');
@@ -111,7 +97,7 @@ function verify(token) {
   return null;
 }
 function authMiddleware(req, res, next) {
-  const token = req.headers.authorization?.split(' ')[1]; // Handle "Bearer <token>"
+  const token = req.headers.authorization?.split(' ')[1];
   const user = verify(token);
   if (!user) {
     return res.status(403).json({ message: 'Unauthorized - please log in first' });
@@ -121,7 +107,6 @@ function authMiddleware(req, res, next) {
 }
 
 //API Endpoints
-
 app.get('/api/categories', (req, res) => {
   res.json(categoriesData);
 });
@@ -208,6 +193,24 @@ app.post('/api/categories', upload.array('photos'), (req, res) => {
   }
 });
 
+app.put('/api/users/:id', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const { username } = req.body;
+
+  const userIndex = usersData.findIndex(u => u.id === userId);
+
+  //Validasi
+  if (!username || !username.trim()) {
+    return res.status(400).json({ message: "Username cannot be empty" });
+  }
+
+  //Update username
+  usersData[userIndex].username = username;
+  saveDataToFile();
+
+  const { password, ...updatedUserData } = usersData[userIndex];
+  res.json({ success: true, message: "Username has change", user: updatedUserData });
+});
 
 app.delete('/api/categories/:categoryId/candidates/:candidateId', (req, res) => {
   const { categoryId, candidateId } = req.params;

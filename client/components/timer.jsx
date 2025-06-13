@@ -15,9 +15,8 @@ export default function CountdownTimer(props) {
     const now = new Date().getTime();
     const difference = deadlineTime - now;
 
-    //waktu habis --->  00:00:00
     if (difference <= 0) {
-      setTimeLeft("00:00:00");
+      setTimeLeft("00:00:00"); //waktu habis set 00:00:00
       clearInterval(timerInterval);
       return;
     }

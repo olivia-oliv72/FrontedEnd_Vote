@@ -8,7 +8,7 @@ export const roleUsers = [
   },
   {
     "id": 2,
-    "username": "user1",
+    "username": "aaa",
     "password": "$2b$10$vrmqG4efVeylooFxdUV21e.IKvp4GDzr05XYZArZ.NAgZcNt75l7m",
     "email": "user@gmail.com",
     "role": "user"
@@ -28,7 +28,6 @@ export const roleUsers = [
     "role": "user"
   }
 ];
-
 export const initialCategories = [
   {
     "id": "female",

@@ -16,7 +16,6 @@ export default function Home() {
       <Banner/>
       <p id="banner-p">Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.</p>
 
-
       {/* Countdown Time*/}
       <CountdownTimer deadline={voting_end_time}/>
 
