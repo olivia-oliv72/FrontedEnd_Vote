@@ -4,68 +4,68 @@
     height: 100%
 }
 
-.voting-header {
+/* .voting-header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
     align-items: center;
     background-color: rgb(174 168 178);
-}
+} */
 
-.search-input {
+/* .search-input {
     width: 200px;
     height: 20px;
     border-radius: 20px;
     padding: 10px;
-}
+} */
 
-.categoryHeader {
+/* .categoryHeader {
     width: 75%;
     height: 10%;
-}
+} */
 
-.categoryHeader p {
+/* .categoryHeader p {
     font-size: 30px;
     margin: 0;
     padding: 10px;
-}
+} */
 
-.candidates-button-container {
+/* .candidates-button-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 25px 0 25px 0;
-}
+} */
 
-.candidates-list {
+/* .candidates-list {
     display: flex;
     align-items: center;
     column-gap: 50px;
-}
+} */
 
-.leftArrow {
+/* .leftArrow {
     transform: scaleX(-1);
     cursor: pointer;
 }
 
 .rightArrow {
     cursor: pointer;
-}
+} */
 
-.candidates {
+/* .candidates {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
-}
+} */
 
-.candidates-row1,
+/* .candidates-row1,
 .candidates-row2 {
     display: flex;
 
-}
+} */
 
-.candidate-group {
+/* .candidate-group {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -80,19 +80,19 @@
     height: 200px;
     margin: 10px;
     column-gap: 10px;
-}
+} */
 
-.candidate-group img {
+/* .candidate-group img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-}
+} */
 
 .candidate-img.selected {
     border: 7px solid #e3c365;
 }
 
-.candidate-group p {
+/* .candidate-group p {
     position: absolute;
     top: 75%;
     left: 50%;
@@ -102,25 +102,25 @@
     transform: translate(-50%, -50%);
     background-color: aliceblue;
     pointer-events: none;
-}
+} */
 
-.voteButton button {
+/* .voteButton button {
     width: 200px;
     height: 50px;
     margin: 10px;
     border-radius: 20px;
     cursor: pointer;
-}
+} */
 
 .voteButton button:hover {
     background-color: rgb(174, 174, 174);
 }
 
-.selected-name {
+/* .selected-name {
     font-size: larger;
-}
+} */
 
-.overlay {
+/* .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -131,24 +131,24 @@
     justify-content: center;
     align-items: center;
     z-index: 999;
-}
+} */
 
-.overlay-content {
+/* .overlay-content {
     background: white;
     padding: 2rem;
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-}
+} */
 
-.overlay-buttons {
+/* .overlay-buttons {
     margin-top: 1rem;
     display: flex;
     gap: 1rem;
     justify-content: center;
-}
+} */
 
-.overlay-buttons button {
+/* .overlay-buttons button {
     padding: 0.5rem 1.2rem;
     border-radius: 6px;
     border: none;
@@ -162,13 +162,13 @@
 
 .overlay-buttons button:last-child {
     background-color: #ccc;
-}
+} */
 
 
-.footer {
+/* .footer {
     background-color: rgb(174 168 178);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 17px;
-}
+} */
