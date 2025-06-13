@@ -1,4 +1,3 @@
-import "../assets/css/navbar.css";
 import { getUser, getUserRole } from "../utils/authentication";
 import { Switch, Match } from "solid-js";
 import img_user from "../assets/img/logo_user.png"
@@ -15,34 +14,34 @@ export default function NavbarGuest() {
   }
   return (
 
-    <nav class="navigation">
-      <div class="container">
-        <h1 id="header">Artist Awards 2025</h1>
+    <nav class="navigation sticky z-10 top-0">
+      <div class="container flex justify-between p-[10px] bg-gradient-to-b from-black to-transparent">
+        <h1 class="m-0 text-[30px] text-[#e3c365] font-bold" id="header">Artist Awards 2025</h1>
 
         <Switch>
           <Match when={!user}>
             {/* Guest */}
-            <a href="/login">Login/Register</a>
+            <a class="no-underline cursor-pointer text-[20px] text-[#fff] hover:text-[#e3c365]" href="/login">Login/Register</a>
           </Match>
 
           <Match when={user?.role === "user"}>
             {/* User */}
-            <div class="container-nav-user">
-              <a onClick={handleHome}>Home</a>
-              <a href="/History">History</a>
-              <div class="user">
-                <span>Welcome, {user.username}!</span>
-                <a href="/History"><img src={img_user} alt="image_user" /></a>
+            <div class="container-nav-user flex justify-between items-center w-[400px]">
+              <a class="no-underline cursor-pointer text-[20px] text-[#fff] hover:text-[#e3c365]" onClick={handleHome}>Home</a>
+              <a class="no-underline cursor-pointer text-[20px] text-[#fff] hover:text-[#e3c365]" href="/History">History</a>
+              <div class="user flex items-center justify-between size-fit gap-x-[10px]">
+                <span class="text-[20px] text-[#fff]">Welcome, {user.username}!</span>
+                <a class="no-underline cursor-pointer text-[20px] text-[#fff]" href="/History"><img src={img_user} alt="image_user" class="size-[25px]" /></a>
               </div>
             </div>
           </Match>
 
           <Match when={user?.role === "admin"}>
             {/* Admin */}
-            <div class="user">
+            <div class="user flex items-center justify-between size-fit gap-x-[10px]">
 
-              <span>Welcome, {user.username}!</span>
-              <a class="logout-admin" href="/logout"><img src={logout}></img></a>
+              <span class="text-[20px] text-[#fff]">Welcome, {user.username}!</span>
+              <a class="logout-admin h-[20px] underline cursor-pointer ml-[1vh]" href="/logout"><img src={logout} class="h-[20px] w-[25px]"></img></a>
 
             </div>
           </Match>

@@ -1,5 +1,4 @@
 import { createSignal, onMount, For, Show } from 'solid-js';
-import "../../assets/css/voter/History.css";
 import { getUser } from "../../utils/authentication";
 
 
@@ -31,7 +30,7 @@ export default function History() {
         setUserVotes(dataFromServer.history.vote);
       }
     } catch (err) {
-      setError(err.message || "Terjadi kesalahan saat mengambil history vote.");
+      setError(err.message || "Failed to fetch history.");
     } finally {
       setIsLoading(false);
     }
@@ -39,10 +38,10 @@ export default function History() {
 
   return (
     <>
-      <div class="container-main-history">
+      <div class="container-main-history p-[25px]">
 
         <Show when={isLoading()}>
-          <p>Memuat history...</p>
+          <p>Loading history...</p>
         </Show>
 
         <Show when={error()}>
@@ -52,13 +51,14 @@ export default function History() {
         <Show when={!isLoading() && !error() && userVotes().length > 0}>
           <For each={userVotes()}>
             {(vote) => (
-              <div class="container-history">
-                <div class="container-photo">
-                  <img class="artist-photo" src={`/server/photo-candidates/${vote.photo}`} alt={vote.name} />
+              <div class="container-history flex p-[10px] pl-[90px] gap-x-[30px] w-fit items-center">
+                <div class="container-photo relative inline-block">
+                  <img class="artist-photo flex size-[200px] rounded-[5px] area-pfp items-center" src={`/server/photo-candidates/${vote.photo}`} alt={vote.name} />
+                  <div class="absolute bottom-0 left-0 w-full h-[100px] bg-gradient-to-t from-black to-transparent"></div>
                 </div>
-                <div class="container-info">
-                  <h1 class="name-category">{vote.category}</h1>
-                  <p class="artist">{vote.name}</p>
+                <div class="container-info area-info justify-center">
+                  <h1 class="name-category flex m-[10px] text-xl text-[#fff]">{vote.category}</h1>
+                  <p class="artist flex m-[10px] text-[30px] text-[#e3c365] font-bold hover:scale-[1.2] transition duration-1000">{vote.name}</p>
                 </div>
               </div>
             )}

@@ -1,4 +1,3 @@
-
 export const roleUsers = [
   {
     "id": 1,
@@ -28,7 +27,8 @@ export const roleUsers = [
     "role": "user"
   }
 ];
-export const initialCategories = [
+
+    export const initialCategories = [
   {
     "id": "female",
     "name": "Best Female Artist",
@@ -198,7 +198,8 @@ export const initialCategories = [
     ]
   }
 ];
-export const history = [
+
+    export const history = [
   {
     "email": "user@gmail.com",
     "vote": [
@@ -209,15 +210,15 @@ export const history = [
       },
       {
         "category": "Best Male",
-        "name": "TXT",
-        "photo": "iu.png"
+        "name": "Lim Youngwoong",
+        "photo": "youngwoong.jpg"
       },
       {
         "category": "Best Collaboration",
         "name": "Zico",
-        "photo": "iu.png"
+        "photo": "zico-jennie.jpg"
       }
     ]
   }
 ];
-  
+    

@@ -1,4 +1,4 @@
-table {
+/* table {
     border: 1px solid black;
     width: 100vh;
     margin-bottom: 5vh;
@@ -8,26 +8,18 @@ tr,
 td {
     border: 1px solid black;
     align-items: center;
-}
+} */
 
-.candidate-photo img {
+/* .candidate-photo img {
     width: 100px;
     height: 100px;
-
-}
+} */
 
 .table-category {
     width: 100%;
     margin-bottom: 2rem;
     border-collapse: collapse;
     border: 1px solid #ccc;
-}
-
-.category-header {
-    background-color: #f0f0f0;
-    font-size: 1.5rem;
-    text-align: center;
-    padding: 1rem;
 }
 
 .candidate-row {
@@ -52,25 +44,28 @@ td {
     padding: 0.5rem;
 }
 
-.candidate-name {
+/* .candidate-name {
     padding-left: 1rem;
     vertical-align: middle;
     font-size: 1.1rem;
     text-align: center;
-}
+} */
 
-.category-header {
+/* .category-header {
     position: sticky;
     top: 0;
     background-color: #f0f0f0;
     z-index: 1;
     padding: 1rem;
-}
+    background-color: #f0f0f0;
+    font-size: 1.5rem;
+    text-align: center;
+} */
 
-.header-content {
+/* .header-content {
     position: relative;
     text-align: center;
-}
+} */
 
 .category-name {
     display: block;
@@ -78,7 +73,7 @@ td {
     font-weight: bold;
 }
 
-.edit-button {
+/* .edit-button {
     position: absolute;
     right: 0;
     top: 50%;
@@ -88,8 +83,8 @@ td {
     color: #007bff;
     cursor: pointer;
     font-size: 0.9rem;
-}
+} */
 
-.edit-button:hover {
+/* .edit-button:hover {
     text-decoration: underline;
-}
+} */

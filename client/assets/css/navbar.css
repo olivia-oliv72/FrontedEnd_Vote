@@ -1,16 +1,15 @@
 /*css untuk navbar*/
-.navigation {
+/* .navigation {
     position: sticky;
     top: 0;
     z-index: 10;
-
 }
 
 .container {
     display: flex;
     justify-content: space-between;
     padding: 15px;
-    background-color: rgb(174 168 178);
+    background-color: #ddd;
     align-items: center;
 }
 
@@ -34,25 +33,25 @@ span {
 a {
     text-decoration: underline;
     cursor: pointer;
-}
+} */
 
-.container-nav-user {
+/* .container-nav-user {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 400px;
-}
+} */
 
-.container-nav-user a {
+/* .container-nav-user a {
     font-size: 20px;
     color: black;
-}
+} */
 
-.container-nav-user a:hover {
+/* .container-nav-user a:hover {
     color: blue;
-}
+} */
 
-.user {
+/* .user {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,4 +66,4 @@ a {
 
 .logout-admin {
     margin-left: 1vh;
-}
+} */
