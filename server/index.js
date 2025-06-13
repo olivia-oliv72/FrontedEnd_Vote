@@ -23,9 +23,6 @@ app.use("/photo-candidates", express.static(path.join(__dirname, "photo-candidat
 let usersData = [...roleUsers];
 let categoriesData = [...initialCategories];
 
-app.use(cors());
-app.use(express.json());
-
 //multer untuk menyimpan file dengan nama sesuai `photo`
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -60,12 +57,6 @@ app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
     console.error('PUT /api/categories/:id error:', err);
     res.status(500).json({ message: "Internal Server Error", error: err.message });
   }
-});
-
-app.put("/api/categories/:id", upload.array("photos"), (req, res) => {
-  console.log("ID kategori:", req.params.id);
-  console.log("Data dari client:", req.body.data);
-  console.log("Files uploaded:", req.files?.map(f => f.filename));
 });
 
 //Jalankan server
@@ -202,6 +193,24 @@ app.post('/api/categories', upload.array('photos'), (req, res) => {
   }
 });
 
+app.put('/api/users/:id', (req, res) => {
+  const userId = parseInt(req.params.id);
+  const { username } = req.body;
+
+  const userIndex = usersData.findIndex(u => u.id === userId);
+
+  //Validasi
+  if (!username || !username.trim()) {
+    return res.status(400).json({ message: "Username cannot be empty" });
+  }
+
+  //Update username
+  usersData[userIndex].username = username;
+  saveDataToFile();
+
+  const { password, ...updatedUserData } = usersData[userIndex];
+  res.json({ success: true, message: "Username has change", user: updatedUserData });
+});
 
 app.delete('/api/categories/:categoryId/candidates/:candidateId', (req, res) => {
   const { categoryId, candidateId } = req.params;
