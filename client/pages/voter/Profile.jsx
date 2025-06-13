@@ -63,7 +63,6 @@ function Profile() {
                 <Footer />
             </div>
         </>
-
     )
 }
 

@@ -2,7 +2,6 @@ import { createSignal, onMount, For, Show } from 'solid-js';
 import "../../assets/css/voter/History.css";
 import { getUser } from "../../utils/authentication";
 
-
 export default function History() {
   const [userVotes, setUserVotes] = createSignal([]);
   const [isLoading, setIsLoading] = createSignal(true);
