@@ -1,5 +1,4 @@
 import NavbarGuest from "../../../components/Navbar";
-import "../../../assets/css/guest/Home.css"
 import TeaserCandidates from "./TeaserCandidates";
 import Banner from "../../../components/banner"
 import Footer from "../../../components/footer"
@@ -14,7 +13,9 @@ export default function Home() {
 
       {/* Banner */}
       <Banner/>
-      <p id="banner-p">Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.</p>
+      <p class="bg-[#000] p-[5px] pl-[15px] m-0 text-[20px] text-[#e3c365] text-center" id="banner-p">
+        Voting platform for Artist Award 2025! Discover the nominees and vote for your favorite artist.
+      </p>
 
       {/* Countdown Time*/}
       <CountdownTimer deadline={voting_end_time}/>

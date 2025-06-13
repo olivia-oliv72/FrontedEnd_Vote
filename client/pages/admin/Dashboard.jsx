@@ -1,5 +1,4 @@
 import Navbar from "../../components/Navbar";
-import "../../assets/css/admin/dashboard.css";
 
 import AwardsTable from "./AwardsTable"
 import { useNavigate } from "@solidjs/router";
@@ -14,13 +13,17 @@ export default function Home() {
         <div >
             {/* Header */}
             <Navbar />
-            <div className="page-container">
+            <div className="page-container m-[2vh]">
                 {/* Title */}
-                <h1 class="title-dashboard">
+                <h1 class="title-dashboard pl-[3%]">
                     Dashboard
                 </h1>
-                <div class="button-table">
-                    <button class="add-category-button" onClick={handleAddNewCategory}>Add New Category</button>
+                <div class="button-table flex flex-col w-[100%] items-center justify-center">
+                    <button
+                        class="add-category-button w-fit h-auto[40px] p-[10px] bg-[#e3c365] rounded-[5px] text-[18px] font-bold items-center justify-center"
+                        onClick={handleAddNewCategory}>
+                        Add New Category
+                    </button>
                     <AwardsTable />
                 </div>
             </div>

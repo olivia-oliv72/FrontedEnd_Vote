@@ -1,4 +1,3 @@
-import "../../assets/css/voter/Profile.css";
 import NavbarGuest from "../../components/Navbar.jsx";
 import Footer from "../../components/footer.jsx";
 import History from "../voter/History.jsx";
@@ -32,31 +31,31 @@ function Profile() {
 
     return (
         <>
-            <div class="page-profile-container">
+            <div className="page-profile-container flex flex-col min-h-[100vh]">
                 <NavbarGuest />
-                <div class="container-profile">
-                    <div class="pfp">
+                <div className="container-profile flex p-[20px] gap-x-[30px] items-center justify-center">
+                    <div className="pfp area-pfp size-[90px] rounded-full bg-[#333] flex items-center justify-center">
                         <ProfilePicture />
                     </div>
-                    <div class="container-info">
+                    <div className="container-info area-info justify-center">
                         {
                             editing() ? (
-                                <div class="container-edit-usn">
-                                    <input type="text" class="input-username" value={newUsername()} onInput={(e) => setNewUsername(e.target.value)}></input>
-                                    <img src={checked} class="icon-confirm" onClick={changeUsername}></img>
+                                <div className="container-edit-usn flex">
+                                    <input type="text" className="input-username outline-none border-[0 0 2px]" value={newUsername()} onInput={(e) => setNewUsername(e.target.value)}></input>
+                                    <img src={checked} className="icon-confirm max-w-[25px] max-h-[25px]" onClick={changeUsername}></img>
                                 </div>
                             ) : (
-                                <h2 class="username">{user.username}
-                                    <img src={edit} alt="Edit Username" class="icon-edit" onClick={() => setEditing(true)}></img>
-                                </h2>
+                                <h1 className="username flex m-[10px] mb-0 gap-x-[20px] font-bold text-[23px] text-[#fff]">{user.username}
+                                    <img src={edit} alt="Edit Username" className="icon-edit max-w-[25px] max-h-[25px]" onClick={() => setEditing(true)}></img>
+                                </h1>
                             )
                         }
-                        <p class="email">{user.email}</p>
-                        <a class="logout" href="/logout">Logout</a>
+                        <p className="email flex m-[10px] mt-0 text-[#fff]">{user.email}</p>
+                        <a className="logout flex font-bold no-underline w-[100px] h-[25px] m-[10px] rounded-[5px] cursor-pointer bg-[#e3c365] items-center justify-center" href="/logout">Logout</a>
                     </div>
                 </div>
-                <div class="container-title">
-                    <h2>Vote History</h2>
+                <div className="container-title">
+                    <h1 className="pl-[110px] font-bold text-[30px] text-[#fff]">Vote History</h1>
                 </div>
                 <History />
 
@@ -71,7 +70,7 @@ function ProfilePicture() {
     const initial = user.username.charAt(0).toUpperCase();
     return (
         <>
-            <div class="initial">
+            <div className="initial text-white text-[45px] font-bold">
                 {initial}
             </div>
         </>

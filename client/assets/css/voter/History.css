@@ -2,30 +2,30 @@
     padding-left: 50px;
 }
 
-.container-history {
+/* .container-history {
     display: grid;
     grid-template-areas: 'photo info';
     padding: 20px;
     column-gap: 30px;
     width: fit-content;
     align-items: center;
-}
+} */
 
-.artist-photo {
+/* .artist-photo {
     grid-area: photo;
     width: 120px;
     height: 120px;
     border-radius: 3px;
     display: flex;
     align-items: center;
-}
+} */
 
-.container-info {
+/* .container-info {
     grid-area: info;
     justify-content: center;
-}
+} */
 
-.name-category,
+/* .name-category,
 .artist {
     display: flex;
     margin: 10px;
@@ -38,4 +38,4 @@
 
 .container-edit-usn {
     display: flex;
-}
+} */

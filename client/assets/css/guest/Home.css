@@ -1,10 +1,10 @@
-/*css untuk home guest */
+/* css untuk home guest 
 body {
     margin: 0px;
 }
 
 /*Banner*/
-.container-banner {
+/* .container-banner {
     background-color: rgb(174 168 178);
     position: relative;
     width: 100%;
@@ -13,7 +13,7 @@ body {
     font-family: sans-serif;
     display: flex;
     flex-direction: column;
-}
+} */
 
 .container-banner img {
     width: 100%;
@@ -21,33 +21,33 @@ body {
     height: 100%
 }
 
-#banner-p {
+/* #banner-p {
     background-color: rgb(174 168 178);
     padding: 5px;
     padding-left: 15px;
     margin: 0;
     font-size: 20px;
-}
+} */
 
 /*Timer*/
-.container-timer {
+/* .container-timer {
     display: flex;
     justify-content: center;
     flex-direction: column;
     padding: 15px;
     align-items: center;
     gap: 7px;
-}
+} */
 
-.container-timer h1 {
+/* .container-timer h1 {
     margin: 0px;
-}
+} */
 
 /*Footer*/
-.footer {
+/* .footer {
     background-color: rgb(174 168 178);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 17px;
-}
+} */
